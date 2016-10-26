@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "./node_modules/.bin/nodemon ./bin/server.js",
+    "debug": "set DEBUG=remy:* && npm start"
   },
   "dependencies": {
     "body-parser": "~1.15.1",
