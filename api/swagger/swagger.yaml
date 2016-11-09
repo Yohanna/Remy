@@ -5,7 +5,7 @@ info:
 # during dev, should point to your local machine
 host: localhost:10010
 # basePath prefixes all resource paths 
-basePath: /
+basePath: /api
 # 
 schemes:
   # tip: remove http to make production-grade
@@ -18,7 +18,67 @@ consumes:
 produces:
   - application/json
 paths:
-  /hello:
+  /restaurants_list:
+    x-swagger-router-controller: restaurants_list
+    get:
+      description: Returns a list of restaurants to the user
+      operationId: getRestaurantsList
+      parameters:
+        # TODO remove this paramter
+        - name: name
+          in: query
+          description: The name of the person to whom to say hello
+          required: false
+          type: string
+       
+        - name: location_long
+          in: query
+          description: User's Longitude
+          required: false # TODO change to True
+          type: integer
+       
+        - name: location_lat
+          in: query
+          description: User's Latitude
+          required: false # TODO change to True
+          type: integer        
+       
+        - name: distance
+          in: query
+          description: Max distance to user
+          required: false # TODO change to True
+          type: integer
+        
+        - name: cuisine_type
+          in: query
+          description: Type of restaurant
+          required: false # TODO change to True
+          type: string
+          
+        - name: open_now
+          in: query
+          description: Whether the restaurant is open or not
+          required: false # TODO change to True
+          type: boolean
+        
+        - name: restaurants_count
+          in: query
+          description: How many restaurants to return
+          required: false # TODO change to True
+          type: integer          
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/RestaurantsListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        
+  /name:
     # binds a127 app logic to a route
     x-swagger-router-controller: hello_world
     get:
@@ -44,14 +104,45 @@ paths:
             $ref: "#/definitions/ErrorResponse"
   /swagger:
     x-swagger-pipe: swagger_raw
+
 # complex objects have schema definitions
 definitions:
+  RestaurantsListResponse:
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+        description: Restaurant name
+      location_long:
+        type: string
+        description: Restaurant's location Longitude
+      location_lat:
+        type: string
+        description: Restaurant's location Latitude  
+     
+      distance:
+        type: string
+        description: Distance to user in KM
+      
+      cuisine_type:
+        type: string
+        description: Restaurant's cuisine type
+      
+      # photoUrls:
+      #   type: array
+      #   items:
+      #     type: string
+
+        
   HelloWorldResponse:
     required:
       - message
     properties:
       message:
         type: string
+        
   ErrorResponse:
     required:
       - message
