@@ -5,7 +5,7 @@
   "description": "Remy Backend API Server",
   "main": "app.js",
   "scripts": {
-    "start": "./node_modules/.bin/swagger project start",
+    "start": "node app.js",
     "test": "swagger project test"
   },
   "dependencies": {
