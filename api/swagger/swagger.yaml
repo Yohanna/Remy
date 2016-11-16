@@ -5,7 +5,7 @@ info:
 # during dev, should point to your local machine
 host: localhost:10010
 # basePath prefixes all resource paths 
-basePath: /api
+# basePath: /api
 # 
 schemes:
   # tip: remove http to make production-grade
@@ -78,7 +78,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
         
-  /name:
+  /hello:
     # binds a127 app logic to a route
     x-swagger-router-controller: hello_world
     get:
