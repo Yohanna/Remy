@@ -20,11 +20,15 @@ Tools to install
 * The API specs are defined using Swagger Specs. [Swagger Node](https://github.com/swagger-api/swagger-node/)
 and [Swagger Tools](https://github.com/apigee-127/swagger-tools) are used to validate the API requests and display the API docs.
 
-### API Implementation
+### Resources
+
 * The following tutorials are a good start on how APIs are implemented in Swagger:
   - [BUILD YOUR MICROSERVICES API WITH SWAGGER AND EXPRESS](http://robferguson.org/2015/06/06/build-your-microservices-api-with-swagger/)
   - [Speed up your RESTful API development in Node.js with Swagger](https://scotch.io/tutorials/speed-up-your-restful-api-development-in-node-js-with-swagger)
   - [Swagger Docs](https://github.com/swagger-api/swagger-node/blob/master/docs/README.md)
 
-* Implement the server logic in the `server` directory, then run `node file_name` to run the file you want to test. This is just a temporary way
-of testing your app logic, it will change later.
+### Implementation Guide
+
+* Implement the server logic such as Google Maps API calss in the `server` directory.
+
+* Any configuration options like API keys, environment variables...etc., should be added in `config/config.js`
