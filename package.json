@@ -5,12 +5,14 @@
   "description": "Remy Backend API Server",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "swagger project start",
+    "edit-api": "swagger project edit",
     "test": "swagger project test",
     "lint": "eslint ."
   },
   "dependencies": {
     "express": "^4.12.3",
+    "swagger": "^0.7.5",
     "swagger-express-mw": "^0.1.0",
     "swagger-tools": "^0.10.1"
   },

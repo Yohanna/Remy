@@ -10,9 +10,12 @@ Tools to install
 
 ### Running the server
 * cd to the directory of the repo and run the following from a terminal:
-1. `npm install swagger -g` This installs `swagger` globally.
-2. `npm install` to install all the required modules listed in `package.json`
-3. `swagger project start` to run the server
+1. `npm install` To install all the dependencies from `package.json`.
+2. `npm start` to run the server.
+
+#### To edit the API specs in Swagger Editor
+* `npm run edit-api` to open Swagger Editor in a browsr menu. Make sure the server
+is running as well in a separate terminal window.
 
 * To edit the API specs using Swagger Editor, run `swagger project edit`.
 
