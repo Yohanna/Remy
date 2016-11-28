@@ -17,7 +17,8 @@ Tools to install
 * `npm run edit-api` to open Swagger Editor in a browsr menu. Make sure the server
 is running as well in a separate terminal window.
 
-* To edit the API specs using Swagger Editor, run `swagger project edit`.
+#### To print extra debuging info
+* Run `npm run debug`
 
 ### Description of modules used
 * The API specs are defined using Swagger Specs. [Swagger Node](https://github.com/swagger-api/swagger-node/)
