@@ -1,0 +1,26 @@
+{
+    "env": {
+        "node": true,
+        "mocha": true
+    },
+    "parserOptions":{
+        "ecmaVersion": 6,
+        "ecmaFeatures": {
+            "impliedStrict": true // enable global strict mode
+        }
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "no-console": "warn",
+        "eqeqeq": "error",
+        "no-var": "warn"
+    }
+}
