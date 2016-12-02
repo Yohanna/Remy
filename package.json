@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "eslint": "^3.10.2",
-    "should": "^7.1.0",
-    "supertest": "^1.0.0"
+    "should": "^8.4.0",
+    "supertest": "^1.2.0"
   }
 }
