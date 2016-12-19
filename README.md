@@ -13,9 +13,8 @@ Tools to install
 1. `npm install` To install all the dependencies from `package.json`.
 2. `npm start` to run the server.
 
-#### To edit the API specs in Swagger Editor
-* `npm run edit-api` to open Swagger Editor in a browsr menu. Make sure the server
-is running as well in a separate terminal window.
+#### To edit the API specs in Swagger Editor TODO, doesn't work
+* `swagger project edit` to open Swagger Editor in the browser. Make sure the server is running as well in a separate terminal window.
 
 #### To print extra debuging info
 * Run `npm run debug`
