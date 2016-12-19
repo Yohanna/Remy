@@ -1,9 +1,3 @@
-module.exports = {
-  option: true,
-  API_KEY: '', // Add your API Key here. DO NOT commit the key, keep it private!
-  myKey: myKey
-};
-
 let myKey = {
   'type': 'service_account',
   'project_id': 'remyowen-148323',
@@ -15,4 +9,11 @@ let myKey = {
   'token_uri': 'https://accounts.google.com/o/oauth2/token',
   'auth_provider_x509_cert_url': 'https://www.googleapis.com/oauth2/v1/certs',
   'client_x509_cert_url': 'https://www.googleapis.com/robot/v1/metadata/x509/remyowen-148323%40appspot.gserviceaccount.com'
-}
+};
+
+
+module.exports = {
+  option: true,
+  API_KEY: '', // Add your API Key here. DO NOT commit the key, keep it private!
+  myKey: myKey
+};
