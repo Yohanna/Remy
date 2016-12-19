@@ -1,4 +1,5 @@
-const config = require('../config/config.js')
+'use strict';
+const config = require('../config/config.js');
 
 var ret = {};
 
@@ -9,8 +10,8 @@ var googleMapClient = require('@google/maps').createClient({
 
 var requestParameters = {};
 
-function rank(req){
-    var fid = 00000000;
+function rank(req) {
+    var fid = 0;
     var fname = 'The Test Place';
     var flat = 10.01;
     var flng = -10.2;
@@ -18,15 +19,16 @@ function rank(req){
     requestParameters.location = [43.571048, -79.767054];
     requestParameters.radius = 50;
 
-    //This is the line that is causing a problem
-    googleMapClient.places(requestParameters, function(err, response){
-        if(err){
+    try {
+        googleMapClient.places(requestParameters, function (err, response) {
+            if (err) { throw err; } // It'll be caught by the catch statement
 
-        }
-        else{
-            
-        }
-    });
+            console.log('No Errors');
+        });
+        
+    } catch (error) {
+        console.log(`Cought an error: ${error}`);
+    }
 
     ret.id = fid;
     ret.name = fname;
