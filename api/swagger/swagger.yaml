@@ -24,12 +24,6 @@ paths:
       description: Returns a list of restaurants to the user
       operationId: getRestaurantsList
       parameters:
-        # TODO remove this paramter
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
        
         - name: location_long
           in: query
@@ -70,9 +64,7 @@ paths:
         "200":
           description: Success
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/RestaurantsListResponse"
+            $ref: "#/definitions/RestaurantsListResponse"
         default:
           description: Error
           schema:
@@ -107,34 +99,31 @@ paths:
 
 # complex objects have schema definitions
 definitions:
+
   RestaurantsListResponse:
+    required:
+      - id
+      - name
+      - lat
+      - lng
     properties:
       id:
         type: integer
         format: int64
+        description: A unique ID for referencing this location through Google
       name:
         type: string
-        description: Restaurant name
-      location_long:
-        type: string
-        description: Restaurant's location Longitude
-      location_lat:
-        type: string
-        description: Restaurant's location Latitude  
-     
-      distance:
-        type: string
-        description: Distance to user in KM
-      
-      cuisine_type:
-        type: string
-        description: Restaurant's cuisine type
-      
-      # photoUrls:
-      #   type: array
-      #   items:
-      #     type: string
-
+        description: The name of the restaurant
+      lat:
+        type: number
+        format: double
+        description: The latitude of the restaurant
+      lng:
+        type: number
+        format: double
+        description: The longitude of the restaurant
+        
+        
         
   HelloWorldResponse:
     required:

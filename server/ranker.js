@@ -1,4 +1,5 @@
-var tempKey = {
+
+var myKey = {
   "type": "service_account",
   "project_id": "remyowen-148323",
   "private_key_id": "4b2c8e430039519e20519ac5eba3d9c1809ec68c",
@@ -11,12 +12,39 @@ var tempKey = {
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/remyowen-148323%40appspot.gserviceaccount.com"
 }
 
-var googleMaps = require('@google/maps').createClient({
-    key : tempKey
+var ret = {};
+
+var googleMapClient = require('@google/maps').createClient({
+    key : myKey.private_key
 });
 
+var requestParameters = {};
+
 function rank(req){
-    return "Owen";
+    var fid = 00000000;
+    var fname = 'The Test Place';
+    var flat = 10.01;
+    var flng = -10.2;
+
+    requestParameters.location = [43.571048, -79.767054];
+    requestParameters.radius = 50;
+
+    //This is the line that is causing a problem
+    googleMapClient.places(requestParameters, function(err, response){
+        if(err){
+
+        }
+        else{
+            
+        }
+    });
+
+    ret.id = fid;
+    ret.name = fname;
+    ret.lat = flat;
+    ret.lng = flng;
+
+    return ret;
 }
 
 module.exports.rank = rank;
