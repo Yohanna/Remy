@@ -8,6 +8,10 @@ Tools to install
 * Node.js
 * An IDE like Visual Studio Code, Visual Studio Community 2015 or Web Storm
 
+### Get a Google Places Web Services API key
+* Get an API Key by following the instructions [here](https://developers.google.com/places/web-service/get-api-key).
+* Once you get your Key, add it to the `API_KEY` variable in `./config/confi.js`. DO NOT commit that key with any code changes!
+
 ### Running the server
 * cd to the directory of the repo and run the following from a terminal:
 1. `npm install` To install all the dependencies from `package.json`.
