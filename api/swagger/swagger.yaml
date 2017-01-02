@@ -24,18 +24,20 @@ paths:
       description: Returns a list of restaurants to the user
       operationId: getRestaurantsList
       parameters:
+      
+        - name: location_lat
+          in: query
+          description: User's Latitude
+          required: false # TODO change to True
+          type: number
+          format: double
        
         - name: location_long
           in: query
           description: User's Longitude
           required: false # TODO change to True
-          type: integer
-       
-        - name: location_lat
-          in: query
-          description: User's Latitude
-          required: false # TODO change to True
-          type: integer        
+          type: number
+          format: double
        
         - name: distance
           in: query
@@ -106,8 +108,6 @@ definitions:
     required:
       - id
       - name
-      - lat
-      - lng
     properties:
       id:
         type: string
