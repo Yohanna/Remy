@@ -1,9 +1,10 @@
 {
     "env": {
         "node": true,
-        "mocha": true
+        "mocha": true,
+        "es6": true
     },
-    "parserOptions":{
+    "parserOptions": {
         "ecmaVersion": 6,
         "ecmaFeatures": {
             "impliedStrict": true // enable global strict mode
