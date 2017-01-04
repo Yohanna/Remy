@@ -7,30 +7,30 @@ let googleMapClient = require('@google/maps').createClient({
 
 let requestParameters = {};
 
-function rank(req) {
+function rank(req, callback) {
     let API_list = [];
-    let i;
     let ret = [];
 
     requestParameters.location = [req.swagger.params.location_lat.value, req.swagger.params.location_long.value];
     requestParameters.radius = req.swagger.params.distance.value;
-    requestParameters.type = "restaurant";
-    requestParameters.query = "";
+    requestParameters.type = 'restaurant';
+    requestParameters.query = '';
 
     try {
         googleMapClient.places(requestParameters, function (err, response) {
             if(!err){
                 API_list = response.json.results;
 
-                for(i = 0; i < API_list.length; i++){
-                    ret.push({"id":API_list[i].id, "name":API_list[i].name});
+                for(let i = 0; i < API_list.length; i++){
+                    ret.push({'id':API_list[i].id, 'name':API_list[i].name});
                 }
             }
-            return ret;
+            // return ret;
+            callback(null, ret);
         });
          
     } catch (error) {
-        return `Caught an error: ${error}`;
+        callback(error, null);
     }
 }
 
