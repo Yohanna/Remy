@@ -7,11 +7,11 @@ module.exports = {
 };
 
 function getRestaurantsList(req, res) {
-  ranker.rank(req, function (err, list) {
-    if (!err) {
+  ranker.rank(req)
+    .then(function(list){
       res.json(list);
-    }else{
-      res.json({message: err});
-    }
-  });
+    })
+    .catch(function(error){
+      res.json({message: error});
+    });
 }
