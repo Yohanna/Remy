@@ -41,14 +41,14 @@ paths:
        
         - name: distance
           in: query
-          description: Max distance to user
+          description: Max distance to user in meters
           required: false # TODO change to True
           type: integer
         
         - name: cuisine_type
           in: query
           description: Type of restaurant
-          required: false # TODO change to True
+          required: false
           type: string
           
         - name: open_now
