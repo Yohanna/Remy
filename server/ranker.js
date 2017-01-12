@@ -1,31 +1,35 @@
 'use strict';
 const config = require('../config/config');
 
-let googleMapClient = require('@google/maps').createClient({
-    key: config.API_KEY
+const googleMapClient = require('@google/maps').createClient({
+    key: process.env.GOOGLE_MAPS_API_KEY || config.API_KEY
 });
 
 function rank(req) {
     return new Promise(function (resolve, reject) {
         let API_list = [];
-        let requestParameters = {};
-        let ret = [];
 
-        requestParameters.location = [req.swagger.params.location_lat.value, req.swagger.params.location_long.value];
-        requestParameters.radius = req.swagger.params.distance.value;
-        requestParameters.type = 'restaurant';
-        requestParameters.query = '';
+        let user_location = {lat: req.swagger.params.location_lat.value, lng: req.swagger.params.location_long.value};
 
-        googleMapClient.places(requestParameters, function (err, response) {
+        let query = {
+            location: {lat: 44.2261, lng: -76.4966},
+            radius: req.swagger.params.distance.value,
+            keyword: req.swagger.params.cuisine_type.value, 
+            rankby: 'prominence',
+            type: 'restaurant'
+        };
+
+        googleMapClient.placesNearby(query, function (err, response) {
             if (!err) {
                 API_list = response.json.results;
 
+                let ret = [];
                 for (let i = 0; i < API_list.length; i++) {
                     ret.push({ 'id': API_list[i].id, 'name': API_list[i].name });
                 }
 
                 // Return ret
-                resolve(ret);
+                resolve(response);
             } else {
                 reject(err);
             }
