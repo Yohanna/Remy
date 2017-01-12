@@ -44,6 +44,7 @@ paths:
           description: Max distance to user in meters
           required: false # TODO change to True
           type: integer
+          default: 5000
         
         - name: cuisine_type
           in: query
@@ -56,6 +57,7 @@ paths:
           description: Whether the restaurant is open or not
           required: false # TODO change to True
           type: boolean
+          default: true
         
         - name: restaurants_count
           in: query

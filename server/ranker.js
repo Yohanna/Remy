@@ -16,6 +16,7 @@ function rank(req) {
             location: { lat: 44.2261, lng: -76.4966 },
             radius: req.swagger.params.distance.value,
             keyword: req.swagger.params.cuisine_type.value,
+            opennow: req.swagger.params.open_now.value,
             rankby: 'prominence',
             type: 'restaurant'
         };
