@@ -7,7 +7,7 @@ module.exports = {
 };
 
 function getRestaurantsList(req, res) {
-  ranker.rank(req)
+  ranker.rank(req.swagger.params)
     .then(function(list){
       res.json(list);
     })
