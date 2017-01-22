@@ -1,8 +1,9 @@
 const sqlite3 = require('sqlite3');
+const DB_PATH = 'D:/Projects/Repos/Remy/db/remy.sqlite';
 
 
 function initializeDB(cb) {
-  const db = new sqlite3.Database('D:/Projects/Repos/Remy/db/remy.sqlite', sqlite3.OPEN_READWRITE, function (err) {
+  const db = new sqlite3.Database(DB_PATH, sqlite3.OPEN_READWRITE, function (err) {
     if (err) throw err;
 
     cb(db);
@@ -23,41 +24,42 @@ function initializeDB(cb) {
 
 // }
 
-function getUser(user_id, cb) {
+// function getUser(user_id, cb) {
 
-  initializeDB(function (db) {
+//   initializeDB(function (db) {
 
-    db.all(`SELECT * FROM users WHERE id = ${user_id}`, function (err, rows) {
-      if (err) {
-        console.log(err);
-        cb(err, null);
-      } else {
-        cb(null, rows);
-      }
-    });
+//     db.all(`SELECT * FROM users WHERE id = ${user_id}`, function (err, rows) {
+//       if (err) {
+//         console.log(err);
+//         cb(err, null);
+//       } else {
+//         cb(null, rows);
+//       }
+//     });
 
-  });
+//   });
 
-}
+// }
 
 
 /**
  * @description Gets a user from db
  * @param {number} user_id User ID to get
  */
-// function getUser(user_id) {
-//   return new Promise(function (resolve, reject) {
-//     db.serialize(function () {
-//       db.all(`SELECT * FROM users WHERE id = ${user_id}`, function (err, rows) {
-//         if (err) {
-//           console.log(err);
-//           reject(err);
-//         }
+function getUser(user_id) {
+  return new Promise(function (resolve, reject) {
+    initializeDB(function (db) {
+      db.all(`SELECT * FROM users WHERE id = ${user_id}`, function (err, rows) {
+        if (err) {
+          console.log(err);
+          reject(err);
+        }
 
-//         resolve(rows);
-//       });
-//     });
-//   }
+        resolve(rows);
+      });
+    });
+  });
+}
 
 /**
  * @description Adds a new user to the db
