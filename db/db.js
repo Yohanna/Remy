@@ -15,13 +15,13 @@ function initializeDB() {
 
 /**
  * @description Gets a user from db
- * @param {number} user_id User ID to get
+ * @param {Number} userID User ID to get
  */
-function getUser(user_id) {
+function getUser(userID) {
   return new Promise(function (resolve, reject) {
     initializeDB()
       .then(function (db) {
-        db.all(`SELECT * FROM users WHERE id = ${user_id}`, function (err, rows) {
+        db.all(`SELECT * FROM users WHERE id = ${userID}`, function (err, rows) {
           if (err) {
             console.log(`db.all Error: ${err}`);
             reject(err);
@@ -34,15 +34,65 @@ function getUser(user_id) {
       });
   });
 }
+
 /**
  * @description Adds a new user to the db
- * @param {object} User use to add to the db
+ * @param {Object} user New user to add
  */
-function addUser(User) {
-  // TODO add a use to the db
+function addUser(user) {
+  return new Promise((resolve, reject) => {
+    initializeDB()
+      .then((db) => {
+        db.run('INSERT INTO users(email,name,password) VALUES ($email, $name, $pass)', {
+          $name: user.name,
+          $email: user.email,
+          $pass: user.password
+        }, function (err) {
+          if (err) {
+            reject(err);
+          }
+          else {
+            resolve();
+          }
+        });
+      })
+      .catch((reason) => {
+        reject(reason);
+      });
+  });
+}
+
+/**
+ * @description Update a user's information
+ * @param {number} userID
+ * @param {Object} user
+ */
+function updateUser(userID, user) {
+  return new Promise((resolve, reject) => {
+    initializeDB()
+      .then((db) => {
+        db.run('UPDATE users SET name = $name, email = $email, password = $pass WHERE id = $id', {
+          $id: userID,
+          $name: user.name,
+          $email: user.email,
+          $pass: user.password
+        }, function (err) {
+          if (err) {
+            reject(err);
+          }
+          else {
+            resolve();
+          }
+        });
+      })
+      .catch((reason) => {
+        reject(reason);
+      });
+  });
 }
 
 module.exports = {
   getUser: getUser,
-  addUser: addUser
+  addUser: addUser,
+  updateUser: updateUser
 };
