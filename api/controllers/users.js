@@ -43,7 +43,15 @@ function updateUser(req, res) {
 }
 
 function deleteUser(req, res) {
-  res.send('delete user');
+  const userID = req.swagger.params.id.value;
+
+  db.deleteUser(userID)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((reason) => {
+      res.send(reason);
+    });
 }
 
 module.exports = {

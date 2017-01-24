@@ -91,8 +91,34 @@ function updateUser(userID, user) {
   });
 }
 
+/**
+ * @description Delete a user's
+ * @param {number} userID
+ */
+function deleteUser(userID) {
+  return new Promise((resolve, reject) => {
+    initializeDB()
+      .then((db) => {
+        db.run('DELETE FROM users WHERE id = $id', {
+          $id: userID,
+        }, function (err) {
+          if (err) {
+            reject(err);
+          }
+          else {
+            resolve();
+          }
+        });
+      })
+      .catch((reason) => {
+        reject(reason);
+      });
+  });
+}
+
 module.exports = {
   getUser: getUser,
   addUser: addUser,
-  updateUser: updateUser
+  updateUser: updateUser,
+  deleteUser: deleteUser
 };
