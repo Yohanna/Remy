@@ -35,6 +35,24 @@ function getUser(userID) {
   });
 }
 
+function getAllUsers() {
+  return new Promise((resolve, reject) => {
+    initializeDB()
+      .then((db) => {
+        db.all('SELECT * FROM users', function (err, rows) {
+          if (err) {
+            console.log(`db.all Error: ${err}`);
+            reject(err);
+          }
+          resolve(rows);
+        });
+      })
+      .catch((reason) => {
+        reject(reason);
+      });
+  });
+}
+
 /**
  * @description Adds a new user to the db
  * @param {Object} user New user to add

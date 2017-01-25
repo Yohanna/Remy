@@ -85,8 +85,12 @@ paths:
         - name: id
           in: query
           description: The ID of the User to get
-          required: true
           type: integer
+        - name: all_users
+          in: query
+          description: Whether to get all the users in the DB
+          type: boolean
+          default: false
       responses:
         "200":
           description: Success
