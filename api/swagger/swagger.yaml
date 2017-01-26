@@ -86,11 +86,7 @@ paths:
           in: query
           description: The ID of the User to get
           type: integer
-        - name: all_users
-          in: query
-          description: Whether to get all the users in the DB
-          type: boolean
-          default: false
+          required: true
       responses:
         "200":
           description: Success
@@ -156,6 +152,24 @@ paths:
       responses:
         "200":
           description: Success
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"      
+    
+  /all_users:
+    x-swagger-router-controller: users
+    get:
+      description: Return all users in theDB
+      operationId: getAllUsers
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/User"
         # responses may fall through to errors
         default:
           description: Error

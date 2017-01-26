@@ -1,13 +1,21 @@
 'use strict';
-// const sqlite3 = require('sqlite3');
 const db = require('../../db/db');
-
-
 
 function getUser(req, res) {
   const userID = req.swagger.params.id.value;
 
   db.getUser(userID)
+    .then(function (result) {
+      res.send(result);
+    })
+    .catch(function (reason) {
+      // res.send(reason);
+      res.status(404).send(reason);
+    });
+}
+
+function getAllUsers(req, res) {
+  db.getAllUsers()
     .then(function (result) {
       res.send(result);
     })
@@ -56,6 +64,7 @@ function deleteUser(req, res) {
 
 module.exports = {
   getUser: getUser,
+  getAllUsers: getAllUsers,
   addUser: addUser,
   updateUser: updateUser,
   deleteUser: deleteUser
