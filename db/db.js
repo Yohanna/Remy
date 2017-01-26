@@ -1,14 +1,17 @@
 const sqlite3 = require('sqlite3');
 const path = require('path');
+const config = require('../config/config');
 
-const DB_PATH = path.join(__dirname, 'remy.sqlite');
+const PROD_DB_PATH = path.join(__dirname, 'prod.sqlite');
+const STAGING_DB_PATH = path.join(__dirname, 'staging.sqlite');
 
 function initializeDB() {
   return new Promise(function (resolve, reject) {
-    const db = new sqlite3.Database(DB_PATH, sqlite3.OPEN_READWRITE, function (err) {
-      if (err) reject(err);
-      resolve(db);
-    });
+    const db = new sqlite3.Database(config.PROD_DB ? PROD_DB_PATH : STAGING_DB_PATH,
+      sqlite3.OPEN_READWRITE, function (err) {
+        if (err) reject(err);
+        resolve(db);
+      });
   });
 }
 
@@ -30,6 +33,28 @@ function getUser(userID) {
         });
       })
       .catch(function (reason) {
+        reject(reason);
+      });
+  });
+}
+
+/**
+ *  Gets all the users in the DB 
+ * @returns {Promise} A promise containing an array of all users rows
+ */
+function getAllUsers() {
+  return new Promise((resolve, reject) => {
+    initializeDB()
+      .then((db) => {
+        db.all('SELECT * FROM users', function (err, rows) {
+          if (err) {
+            console.log(`db.all Error: ${err}`);
+            reject(err);
+          }
+          resolve(rows);
+        });
+      })
+      .catch((reason) => {
         reject(reason);
       });
   });
@@ -118,6 +143,7 @@ function deleteUser(userID) {
 
 module.exports = {
   getUser: getUser,
+  getAllUsers: getAllUsers,
   addUser: addUser,
   updateUser: updateUser,
   deleteUser: deleteUser
