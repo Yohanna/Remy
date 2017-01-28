@@ -29,7 +29,7 @@ function getUser(userID) {
             console.log(`db.all Error: ${err}`);
             reject(err);
           }
-          resolve(rows);
+          resolve(rows[0]);
         });
       })
       .catch(function (reason) {
