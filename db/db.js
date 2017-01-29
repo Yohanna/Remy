@@ -68,18 +68,21 @@ function addUser(user) {
   return new Promise((resolve, reject) => {
     initializeDB()
       .then((db) => {
-        db.run('INSERT INTO users(email,name,password) VALUES ($email, $name, $pass)', {
-          $name: user.name,
-          $email: user.email,
-          $pass: user.password
-        }, function (err) {
-          if (err) {
-            reject(err);
-          }
-          else {
-            resolve();
-          }
-        });
+        db.run(`INSERT INTO users(email,name,password, gender, student)
+                VALUES ($email, $name, $pass, $gender, $student)`, {
+            $name: user.name,
+            $email: user.email,
+            $pass: user.password,
+            $gender: user.gender,
+            $student: user.student
+          }, function (err) {
+            if (err) {
+              reject(err);
+            }
+            else {
+              resolve();
+            }
+          });
       })
       .catch((reason) => {
         reject(reason);

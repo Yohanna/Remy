@@ -264,3 +264,4 @@ definitions:
       student:
         type: boolean
         description: Whether the user is a student or not
+        default: true
