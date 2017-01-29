@@ -1,5 +1,7 @@
 'use strict';
 
 module.exports = {
-  API_KEY: '', // Add your API Key here. DO NOT commit the key, keep it private!
+  API_KEY: process.env.GOOGLE_MAPS_API_KEY || '', // Add your API Key here. DO NOT commit the key, keep it private!
+  PRODUCTION: false,
+  PROD_HOST: '138.197.133.17:10010' // Production host address and port number
 };

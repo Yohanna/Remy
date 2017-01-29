@@ -3,7 +3,7 @@ const config = require('../config/config');
 const logger = require('../helpers/logger');
 
 const googleMapClient = require('@google/maps').createClient({
-    key: process.env.GOOGLE_MAPS_API_KEY || config.API_KEY
+    key: config.API_KEY
 });
 
 function rank(params) {
