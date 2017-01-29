@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: "0.0.1"
-  title: Remy Backend API
+  title: Remy App
 # during dev, should point to your local machine
 host: localhost:10010
 # basePath prefixes all resource paths 
@@ -75,29 +75,24 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-        
-  /user:
+  
+  /users:
     x-swagger-router-controller: users
     get:
-      description: Return a User
-      operationId: getUser
-      parameters:
-        - name: id
-          in: query
-          description: The ID of the User to get
-          type: integer
-          required: true
+      description: Return all users in the DB
+      operationId: getAllUsers
       responses:
         "200":
           description: Success
           schema:
-            # a pointer to a definition
-            $ref: "#/definitions/User"
-        # responses may fall through to errors
+            type: array
+            items:
+              $ref: "#/definitions/User"
         default:
           description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: "#/definitions/ErrorResponse"      
+
     post:
       description: Add a User
       # used as the method name of the controller
@@ -117,12 +112,36 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+            
+  /users/{id}:
+    x-swagger-router-controller: users
+    get:
+      description: Get a single User
+      operationId: getUser
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the User to get
+          type: integer
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/User"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
     put:
       description: Update a User
       operationId: updateUser
       parameters:
         - name: id
-          in: query
+          in: path
           description: The ID of the User to update
           required: true
           type: integer
@@ -145,7 +164,7 @@ paths:
       operationId: deleteUser
       parameters:
         - name: id
-          in: query
+          in: path
           description: The ID of the User to delete
           required: true
           type: integer
@@ -158,24 +177,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"      
     
-  /all_users:
-    x-swagger-router-controller: users
-    get:
-      description: Return all users in theDB
-      operationId: getAllUsers
-      responses:
-        "200":
-          description: Success
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/User"
-        # responses may fall through to errors
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"      
-    
+
   /hello:
     # binds a127 app logic to a route
     x-swagger-router-controller: hello_world
