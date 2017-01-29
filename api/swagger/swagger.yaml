@@ -23,6 +23,8 @@ paths:
     get:
       description: Returns a list of restaurants to the user
       operationId: getRestaurantsList
+      tags: 
+        - Restaurants
       parameters:
       
         - name: location_lat
@@ -81,6 +83,8 @@ paths:
     get:
       description: Return all users in the DB
       operationId: getAllUsers
+      tags:
+        - Users
       responses:
         "200":
           description: Success
@@ -95,8 +99,9 @@ paths:
 
     post:
       description: Add a User
-      # used as the method name of the controller
       operationId: addUser
+      tags:
+        - Users
       parameters:
         - name: user
           in: body
@@ -118,6 +123,8 @@ paths:
     get:
       description: Get a single User
       operationId: getUser
+      tags:
+        - Users
       parameters:
         - name: id
           in: path
@@ -139,6 +146,8 @@ paths:
     put:
       description: Update a User
       operationId: updateUser
+      tags:
+        - Users
       parameters:
         - name: id
           in: path
@@ -162,6 +171,8 @@ paths:
     delete:
       description: Update a User
       operationId: deleteUser
+      tags:
+        - Users
       parameters:
         - name: id
           in: path
@@ -185,6 +196,8 @@ paths:
       description: Returns 'Hello' to the caller
       # used as the method name of the controller
       operationId: hello
+      tags:
+        - Demo
       parameters:
         - name: name
           in: query
