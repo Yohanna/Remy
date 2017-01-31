@@ -14,6 +14,10 @@ function getUser(req, res) {
     });
 }
 
+function getUserMetrics(req, res) {
+  res.send('Metrics');
+}
+
 function getAllUsers(req, res) {
   db.getAllUsers()
     .then(function (result) {
@@ -65,6 +69,7 @@ function deleteUser(req, res) {
 module.exports = {
   getUser: getUser,
   getAllUsers: getAllUsers,
+  getUserMetrics: getUserMetrics,
   addUser: addUser,
   updateUser: updateUser,
   deleteUser: deleteUser
