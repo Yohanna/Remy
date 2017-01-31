@@ -6,7 +6,7 @@
   "main": "app.js",
   "scripts": {
     "start": "swagger project start",
-    "debug": "set DEBUG=swagger-tools:middleware:* && npm start",
+    "debug": "export DEBUG=swagger-tools:middleware:* || set DEBUG=swagger-tools:middleware:*&& npm start",
     "edit-api": "swagger project edit",
     "test": "swagger project test",
     "lint": "eslint ."
