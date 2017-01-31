@@ -187,7 +187,29 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"      
-    
+
+  /user_metrics/{id}:
+    x-swagger-router-controller: users
+    get:
+      description: Get a single User's metrics
+      operationId: getUserMetrics
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the User to get the metrics for
+          type: integer
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/UserMetric"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"    
 
   /hello:
     # binds a127 app logic to a route
@@ -278,3 +300,32 @@ definitions:
         type: boolean
         description: Whether the user is a student or not
         default: true
+  
+  
+  UserMetric:
+    properties:
+      prefered_price:
+        type: integer
+      method_of_transportation:
+        type: string
+      history:
+        properties:
+          schema:
+            $ref: "#/definitions/History"
+        description: History of restaurants visited
+      favorites:
+        type: array
+        items:
+          type: string
+        description: Array of favorite restaurants
+        
+  History:
+    properties:
+      name:
+        type: string
+        description: Name of restaurant visited
+      date:
+        type: string
+        format: date
+        description: Date visited
+
