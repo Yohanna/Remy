@@ -17,7 +17,6 @@ function rank(params) {
             radius: params.distance.value,
             keyword: params.cuisine_type.value,
             opennow: params.open_now.value,
-            rankby: 'prominence',
             type: 'restaurant'
         };
 
@@ -29,12 +28,12 @@ function rank(params) {
                     reject('No locations were found for the provided search.');
                 }
 
-                let ret = []
-                for (let i = 0; i < API_list.length; i++) {
-                    ret.push({ 'id': API_list[i].id, 'name': API_list[i].name });
-                }
+                // let ret = []
+                // for (let i = 0; i < API_list.length; i++) {
+                //     ret.push({ 'id': API_list[i].id, 'name': API_list[i].name });
+                // }
 
-                resolve(response);
+                resolve(API_list.slice(0, params.restaurants_count.value || 10));
             } else {
                 logger.error('Google Maps API called failed');
                 reject(err);

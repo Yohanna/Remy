@@ -64,8 +64,9 @@ paths:
         - name: restaurants_count
           in: query
           description: How many restaurants to return
-          required: false # TODO change to True
-          type: integer          
+          required: false
+          type: integer
+          default: 10
       responses:
         "200":
           description: Success
