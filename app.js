@@ -23,6 +23,11 @@ SwaggerExpress.create(swaggerConfig, function (err, swaggerExpress) {
     swaggerExpress.runner.swagger.host = config.PROD_HOST;
   }
 
+  // Double equal signs to check for empty strings as well
+  if (config.API_KEY == false) {
+    logger.warn('Missing Google API Key');
+  }
+
   // Use Swagger-UI, at /docs path
   app.use(SwaggerUi(swaggerExpress.runner.swagger));
 

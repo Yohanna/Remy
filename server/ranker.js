@@ -36,6 +36,7 @@ function rank(params) {
 
                 resolve(response);
             } else {
+                logger.error('Google Maps API called failed');
                 reject(err);
             }
         });
