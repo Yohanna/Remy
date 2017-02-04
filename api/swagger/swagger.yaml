@@ -357,18 +357,29 @@ definitions:
     properties:
       prefered_price:
         type: integer
-      method_of_transportation:
+      prefered_transportation_method:
         type: string
+        enum:
+          - Walk
+          - Bus
+          - Car
       history:
-        properties:
-          schema:
-            $ref: "#/definitions/History"
+        type: array
+        items:
+          properties:
+            schema:
+              $ref: "#/definitions/History"
         description: History of restaurants visited
-      favorites:
+      favorite_restaurants:
         type: array
         items:
           type: string
-        description: Array of favorite restaurants
+        description: User's favorite restaurants, stored as restaurants IDs
+      favorite_food:
+        type: array
+        items:
+          type: string
+        description: User's favorite food
         
   History:
     properties:
