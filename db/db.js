@@ -1,17 +1,20 @@
 const sqlite3 = require('sqlite3');
 const path = require('path');
 const config = require('../config/config');
+const logger = require('../helpers/logger');
 
 const PROD_DB_PATH = path.join(__dirname, 'prod.sqlite');
 const STAGING_DB_PATH = path.join(__dirname, 'staging.sqlite');
+const DB_USED = config.PROD_DB ? PROD_DB_PATH : STAGING_DB_PATH;
+
+logger.info(`Using DB: ${DB_USED}`);
 
 function initializeDB() {
   return new Promise(function (resolve, reject) {
-    const db = new sqlite3.Database(config.PROD_DB ? PROD_DB_PATH : STAGING_DB_PATH,
-      sqlite3.OPEN_READWRITE, function (err) {
-        if (err) reject(err);
-        resolve(db);
-      });
+    const db = new sqlite3.Database(DB_USED, sqlite3.OPEN_READWRITE, function (err) {
+      if (err) reject(err);
+      resolve(db);
+    });
   });
 }
 
