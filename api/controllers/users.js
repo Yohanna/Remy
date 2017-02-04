@@ -41,6 +41,10 @@ function addUser(req, res) {
     });
 }
 
+function addUserMetrics(req, res) {
+  res.send('addUserMetrics');
+}
+
 function updateUser(req, res) {
   const userID = req.swagger.params.id.value;
   const newUser = req.swagger.params.user.value;
@@ -52,6 +56,10 @@ function updateUser(req, res) {
     .catch((reason) => {
       res.send(reason);
     });
+}
+
+function updateUserMetrics(req, res) {
+  res.send('updateUserMetrics');
 }
 
 function deleteUser(req, res) {
@@ -71,6 +79,8 @@ module.exports = {
   getAllUsers: getAllUsers,
   getUserMetrics: getUserMetrics,
   addUser: addUser,
+  addUserMetrics: addUserMetrics,
+  updateUserMetrics: updateUserMetrics,
   updateUser: updateUser,
   deleteUser: deleteUser
 };
