@@ -190,7 +190,7 @@ paths:
             $ref: "#/definitions/ErrorResponse"      
 
   /user_metrics/{id}:
-    x-swagger-router-controller: users
+    x-swagger-router-controller: user_metrics
     get:
       description: Get a single User's metrics
       operationId: getUserMetrics
