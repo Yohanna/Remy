@@ -12,8 +12,9 @@ function rank(params) {
 
         let user_location = { lat: params.location_lat.value, lng: params.location_long.value };
 
+        // location: { lat: 44.227917, lng: -76.495611 },
         let query = {
-            location: { lat: 44.227917, lng: -76.495611 },
+            location: user_location,
             radius: params.distance.value,
             keyword: params.cuisine_type.value,
             opennow: params.open_now.value,
