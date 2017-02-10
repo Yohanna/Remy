@@ -275,13 +275,7 @@ paths:
           required: true
           description: User's email and password to login
           schema:
-            properties:
-              email:
-                type: string
-                description: The email associated with the person to login
-              password:
-                type: string
-                description: The password associated with the person to login
+            $ref: "#/definitions/UserLoginModel"
    
       responses:
         "200":
@@ -361,6 +355,17 @@ definitions:
       - message
     properties:
       message:
+        type: string
+
+
+  UserLoginModel:
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+      password:
         type: string
         
   User:
