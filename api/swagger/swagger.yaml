@@ -261,6 +261,39 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"  
+  
+  /account/login:
+    x-swagger-router-controller: account
+    post:
+      description: Returns 'Hello' to the caller
+      operationId: login
+      tags:
+        - Account
+      parameters:
+        - name: User info
+          in: body
+          required: true
+          description: User's email and password to login
+          schema:
+            properties:
+              email:
+                type: string
+                description: The email associated with the person to login
+              password:
+                type: string
+                description: The password associated with the person to login
+   
+      responses:
+        "200":
+          description: Success
+        "403":
+          description: Forbidden
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
 
   /hello:
     # binds a127 app logic to a route
