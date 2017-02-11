@@ -10,8 +10,8 @@ const DB_USED = config.PROD_DB ? PROD_DB_PATH : STAGING_DB_PATH;
 logger.info(`Using DB: ${DB_USED}`);
 
 function initializeDB() {
-  return new Promise(function (resolve, reject) {
-    const db = new sqlite3.Database(DB_USED, sqlite3.OPEN_READWRITE, function (err) {
+  return new Promise((resolve, reject) => {
+    const db = new sqlite3.Database(DB_USED, sqlite3.OPEN_READWRITE, (err) => {
       if (err) reject(err);
       resolve(db);
     });
@@ -24,7 +24,7 @@ function initializeDB() {
  * @param {Number} userID User ID to get
  */
 function getUser(userID) {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     initializeDB()
       .then((db) => {
         db.get(`SELECT * FROM users WHERE id = ${userID}`, (err, row) => {
@@ -37,7 +37,7 @@ function getUser(userID) {
           resolve(row);
         });
       })
-      .catch(function (reason) {
+      .catch((reason) => {
         reject(reason);
       });
   });
@@ -51,7 +51,7 @@ function getAllUsers() {
   return new Promise((resolve, reject) => {
     initializeDB()
       .then((db) => {
-        db.all('SELECT * FROM users', function (err, rows) {
+        db.all('SELECT * FROM users', (err, rows) => {
           if (err) {
             console.log(`db.all Error: ${err}`);
             reject(err);
@@ -109,7 +109,7 @@ function updateUser(userID, user) {
           $name: user.name,
           $email: user.email,
           $pass: user.password
-        }, function (err) {
+        }, (err) => {
           if (err) {
             reject(err);
           }
@@ -133,8 +133,8 @@ function deleteUser(userID) {
     initializeDB()
       .then((db) => {
         db.run('DELETE FROM users WHERE id = $id', {
-          $id: userID,
-        }, function (err) {
+          $id: userID
+        }, (err) => {
           if (err) {
             reject(err);
           }
