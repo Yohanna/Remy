@@ -67,20 +67,20 @@ function getAllUsers() {
 
 /**
  * @description Adds a new user to the db
- * @param {Object} user New user to add
+ * @param {Object} newUser New user to add
  */
-function addUser(user) {
+function addUser(newUser) {
   return new Promise((resolve, reject) => {
     initializeDB()
       .then((db) => {
         db.run(`INSERT INTO users(email,name,password, gender, student)
                 VALUES ($email, $name, $pass, $gender, $student)`, {
-            $name: user.name,
-            $email: user.email,
-            $pass: user.password,
-            $gender: user.gender,
-            $student: user.student
-          }, function (err) {
+            $name: newUser.name,
+            $email: newUser.email,
+            $pass: newUser.password,
+            $gender: newUser.gender,
+            $student: newUser.student
+          }, (err) => {
             if (err) {
               reject(err);
             }
