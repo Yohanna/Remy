@@ -26,13 +26,15 @@ function initializeDB() {
 function getUser(userID) {
   return new Promise(function (resolve, reject) {
     initializeDB()
-      .then(function (db) {
-        db.all(`SELECT * FROM users WHERE id = ${userID}`, function (err, rows) {
+      .then((db) => {
+        db.get(`SELECT * FROM users WHERE id = ${userID}`, (err, row) => {
           if (err) {
-            console.log(`db.all Error: ${err}`);
             reject(err);
           }
-          resolve(rows[0]);
+          else if (row === undefined) {
+            reject({ message: 'User does not exist' });
+          }
+          resolve(row);
         });
       })
       .catch(function (reason) {
