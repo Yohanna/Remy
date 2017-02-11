@@ -149,10 +149,43 @@ function deleteUser(userID) {
   });
 }
 
+/**
+ * @description Checks if a user exists in the DB and returns the user's ID if it does
+ * 
+ * @param {Object} userInfo
+ * @property {string} userInfo.email
+ * @property {string} userInfo.password
+ */
+function login(userInfo) {
+  return new Promise((resolve, reject) => {
+    initializeDB()
+      .then((db) => {
+        db.get('SELECT * FROM users WHERE email = $email AND password = $password', {
+          $email: userInfo.email,
+          $password: userInfo.password
+        }, (err, row) => {
+          if (err) {
+            reject(err);
+          } else if (row === undefined) {
+            reject({ message: 'Forbidden' });
+          }
+          else {
+            // Return user's ID
+            resolve(row.id);
+          }
+        });
+      })
+      .catch((reason) => {
+        reject(reason);
+      });
+  });
+}
+
 module.exports = {
   getUser: getUser,
   getAllUsers: getAllUsers,
   addUser: addUser,
   updateUser: updateUser,
-  deleteUser: deleteUser
+  deleteUser: deleteUser,
+  login: login
 };
