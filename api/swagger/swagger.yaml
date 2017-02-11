@@ -136,9 +136,16 @@ paths:
         "200":
           description: Success
           schema:
-            # a pointer to a definition
             $ref: "#/definitions/User"
-        # responses may fall through to errors
+        "404":
+          description: User does not exist
+          schema:
+           title: ErrorResponse
+           type: object
+           properties:
+            message:
+              type: string 
+              default: User does not exist
         default:
           description: Error
           schema:
