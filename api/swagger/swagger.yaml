@@ -277,7 +277,7 @@ paths:
       tags:
         - Account
       parameters:
-        - name: User info
+        - name: LoginInfo
           in: body
           required: true
           description: User's email and password to login
@@ -287,6 +287,12 @@ paths:
       responses:
         "200":
           description: Success
+          schema:
+           title: UserID
+           type: object
+           properties:
+            userID:
+              type: integer
         "403":
           description: Forbidden
           schema:
