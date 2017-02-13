@@ -188,11 +188,52 @@ function login(userInfo) {
   });
 }
 
+
+/**
+ * 
+ * 
+ * @param {Number} userID
+ * @param {Object} userMetrics
+ * @param {integer} userMetrics.prefered_price
+ * @param {string} userMetrics.prefered_transportation_method
+ * @param {Array} userMetrics.history
+ * @param {Array} userMetrics.favorite_restaurants
+ * @param {Array} userMetrics.favorite_food
+ */
+function addUserMetrics(userID, userMetrics) {
+  return new Promise((resolve, reject) => {
+    initializeDB()
+      .then((db) => {
+        db.run(`INSERT INTO user_metrics (user_id, prefered_price, prefered_transportation_method,
+                history, favorite_restaurants, favorite_food)
+                VALUES ($userID, $price, $transMethod, $history, $favRest, $favFood)`, {
+            $userID: userID,
+            $price: userMetrics.prefered_price,
+            $transMethod: userMetrics.prefered_transportation_method,
+            $history: JSON.stringify(userMetrics.history),
+            $favRest: JSON.stringify(userMetrics.favorite_restaurants),
+            $favFood: JSON.stringify(userMetrics.favorite_food)
+          }, (err) => {
+            if (err) {
+              reject(err);
+            }
+            else {
+              resolve();
+            }
+          });
+      })
+      .catch((reason) => {
+        reject(reason);
+      });
+  });
+}
+
 module.exports = {
   getUser: getUser,
   getAllUsers: getAllUsers,
   addUser: addUser,
   updateUser: updateUser,
   deleteUser: deleteUser,
-  login: login
+  login: login,
+  addUserMetrics: addUserMetrics
 };
