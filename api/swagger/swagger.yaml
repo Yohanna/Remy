@@ -113,7 +113,13 @@ paths:
       responses:
         "201":
           description: Success
-        # responses may fall through to errors
+          schema:
+           title: UserID
+           type: object
+           description: User ID of the newly created user
+           properties:
+            userID:
+              type: integer
         default:
           description: Error
           schema:
