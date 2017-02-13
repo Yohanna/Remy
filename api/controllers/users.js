@@ -29,8 +29,8 @@ function addUser(req, res) {
   const newUser = req.swagger.params.user.value;
 
   db.addUser(newUser)
-    .then(() => {
-      res.sendStatus(200);
+    .then((newUserID) => {
+      res.status(201).json({ userID: newUserID });
     })
     .catch((reason) => {
       res.send(reason);

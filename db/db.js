@@ -68,6 +68,7 @@ function getAllUsers() {
 /**
  * @description Adds a new user to the db
  * @param {Object} newUser New user to add
+ * @returns {Promise} A Promise that resolves to the new User ID created
  */
 function addUser(newUser) {
   return new Promise((resolve, reject) => {
@@ -84,8 +85,14 @@ function addUser(newUser) {
             if (err) {
               reject(err);
             }
+          })
+          // Select the same user to return it's ID
+          .get('SELECT * FROM users WHERE email = $email', { $email: newUser.email }, (err, row) => {
+            if (err) {
+              reject(err);
+            }
             else {
-              resolve();
+              resolve(row.id);
             }
           });
       })
