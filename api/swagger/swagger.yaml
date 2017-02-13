@@ -403,11 +403,14 @@ definitions:
         description: Full name
       gender:
         type: string
+        enum:
+         - Male
+         - Female
         description: User's gender
       student:
-        type: boolean
+        type: integer
         description: Whether the user is a student or not
-        default: true
+        default: 1
   
   
   UserMetric:
