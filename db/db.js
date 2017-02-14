@@ -27,7 +27,7 @@ function getUser(userID) {
   return new Promise((resolve, reject) => {
     initializeDB()
       .then((db) => {
-        db.get(`SELECT * FROM users WHERE id = ${userID}`, (err, row) => {
+        db.get('SELECT * FROM users WHERE id = $userID', { $userID: userID }, (err, row) => {
           if (err) {
             reject(err);
           }
@@ -139,9 +139,7 @@ function deleteUser(userID) {
   return new Promise((resolve, reject) => {
     initializeDB()
       .then((db) => {
-        db.run('DELETE FROM users WHERE id = $id', {
-          $id: userID
-        }, (err) => {
+        db.run('DELETE FROM users WHERE id = $id', { $id: userID }, (err) => {
           if (err) {
             reject(err);
           }
