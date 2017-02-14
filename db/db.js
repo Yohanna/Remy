@@ -12,8 +12,8 @@ logger.info(`Using DB: ${DB_USED}`);
 function initializeDB() {
   return new Promise((resolve, reject) => {
     const db = new sqlite3.Database(DB_USED, sqlite3.OPEN_READWRITE, (err) => {
-      if (err) reject(err);
-      resolve(db);
+      if (err) { reject(err); }
+      else { resolve(db); }
     });
   });
 }
@@ -33,8 +33,9 @@ function getUser(userID) {
           }
           else if (row === undefined) {
             reject({ message: 'User does not exist' });
+          } else {
+            resolve(row);
           }
-          resolve(row);
         });
       })
       .catch((reason) => {
@@ -55,8 +56,9 @@ function getAllUsers() {
           if (err) {
             console.log(`db.all Error: ${err}`);
             reject(err);
+          } else {
+            resolve(rows);
           }
-          resolve(rows);
         });
       })
       .catch((reason) => {
