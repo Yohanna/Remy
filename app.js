@@ -6,6 +6,11 @@ const SwaggerUi = require('swagger-tools/middleware/swagger-ui');
 const helmet = require('helmet');
 const config = require('./config/config');
 const logger = require('./helpers/logger');
+const morgan = require('morgan');
+
+
+// Print HTTP VERB logs
+if (config.MORGAN_LOG) { app.use(morgan('dev')); }
 
 app.use(helmet());
 
