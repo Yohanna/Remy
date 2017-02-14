@@ -3,7 +3,15 @@ const db = require('../../db/db');
 
 
 function getUserMetrics(req, res) {
-  res.send('Metrics');
+  const userID = req.swagger.params.id.value;
+
+  db.getUserMetrics(userID)
+    .then((userMetrics) => {
+      res.json(userMetrics);
+    })
+    .catch((reason) => {
+      res.status(404).json({ message: reason });
+    });
 }
 
 function addUserMetrics(req, res) {

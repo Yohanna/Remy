@@ -1,3 +1,5 @@
+'use strict';
+
 const sqlite3 = require('sqlite3');
 const path = require('path');
 const config = require('../config/config');
@@ -160,8 +162,8 @@ function deleteUser(userID) {
  * @description Checks if a user exists in the DB and returns the user's ID if it does
  * 
  * @param {Object} userInfo
- * @property {string} userInfo.email
- * @property {string} userInfo.password
+ * @param {string} userInfo.email
+ * @param {ng} userInfo.password
  */
 function login(userInfo) {
   return new Promise((resolve, reject) => {
@@ -180,6 +182,36 @@ function login(userInfo) {
             // Return user's ID
             resolve(row.id);
           }
+        });
+      })
+      .catch((reason) => {
+        reject(reason);
+      });
+  });
+}
+
+/**
+ * @description Returns a single user metrics
+ * @param {Number} userID User ID to get the metrics for
+ */
+function getUserMetrics(userID) {
+  return new Promise((resolve, reject) => {
+    initializeDB()
+      .then((db) => {
+        db.get('SELECT * FROM user_metrics WHERE user_id = $userID', { $userID: userID }, (err, row) => {
+          if (err) {
+            reject(err);
+          }
+          else if (row === undefined) {
+            reject('User metrics does not exist');
+          } else {
+            // Convert back string objects to actual Objects
+            row.history = JSON.parse(row.history);
+            row.favorite_restaurants = JSON.parse(row.favorite_restaurants);
+            row.favorite_food = JSON.parse(row.favorite_food);
+            resolve(row);
+          }
+
         });
       })
       .catch((reason) => {
@@ -235,5 +267,6 @@ module.exports = {
   updateUser: updateUser,
   deleteUser: deleteUser,
   login: login,
-  addUserMetrics: addUserMetrics
+  addUserMetrics: addUserMetrics,
+  getUserMetrics: getUserMetrics
 };

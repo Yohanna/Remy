@@ -220,6 +220,15 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/UserMetric"
+        "404":
+          description: User metrics does not exist
+          schema:
+           title: ErrorResponse
+           type: object
+           properties:
+            message:
+              type: string 
+              default: User metrics does not exist            
         default:
           description: Error
           schema:
