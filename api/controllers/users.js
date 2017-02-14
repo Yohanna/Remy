@@ -9,8 +9,7 @@ function getUser(req, res) {
       res.send(result);
     })
     .catch(function (reason) {
-      // res.send(reason);
-      res.status(404).send(reason);
+      res.status(404).json(reason);
     });
 }
 
@@ -20,8 +19,7 @@ function getAllUsers(req, res) {
       res.send(result);
     })
     .catch(function (reason) {
-      // res.send(reason);
-      res.status(404).send(reason);
+      res.status(500).json({ message: reason });
     });
 }
 
