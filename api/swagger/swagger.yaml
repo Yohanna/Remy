@@ -27,6 +27,12 @@ paths:
         - Restaurants
       parameters:
       
+        - name: user_id
+          in: query
+          description: User's ID for customized results
+          required: false
+          type: integer
+          
         - name: location_lat
           in: query
           description: User's Latitude
