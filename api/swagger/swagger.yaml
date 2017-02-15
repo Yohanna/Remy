@@ -449,7 +449,7 @@ definitions:
         type: array
         items:
           type: string
-        description: User's favorite restaurants, stored as restaurants IDs
+        description: User's favorite restaurants, stored as restaurants place_id
       favorite_food:
         type: array
         items:
