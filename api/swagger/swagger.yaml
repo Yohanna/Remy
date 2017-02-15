@@ -30,14 +30,14 @@ paths:
         - name: location_lat
           in: query
           description: User's Latitude
-          required: false # TODO change to True
+          required: true
           type: number
           format: double
        
         - name: location_long
           in: query
           description: User's Longitude
-          required: false # TODO change to True
+          required: true
           type: number
           format: double
        
