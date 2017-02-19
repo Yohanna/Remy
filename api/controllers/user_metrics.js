@@ -28,7 +28,16 @@ function addUserMetrics(req, res) {
 }
 
 function updateUserMetrics(req, res) {
-  res.send('updateUserMetrics');
+  const newMetrics = req.swagger.params.metrics.value;
+  const userID = req.swagger.params.id.value;
+
+  db.updateUserMetrics(userID, newMetrics)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((reason) => {
+      res.json({ message: reason });
+    })
 }
 
 

@@ -56,7 +56,6 @@ function getAllUsers() {
       .then((db) => {
         db.all('SELECT * FROM users', (err, rows) => {
           if (err) {
-            console.log(`db.all Error: ${err}`);
             reject(err);
           } else {
             resolve(rows);
@@ -260,6 +259,35 @@ function addUserMetrics(userID, userMetrics) {
   });
 }
 
+
+function updateUserMetrics(userID, newMetrics) {
+  return new Promise((resolve, reject) => {
+    initializeDB()
+      .then((db) => {
+        db.run('UPDATE user_metrics\
+                SET prefered_price=$price, prefered_transportation_method=$transMethod, history=$history, favorite_restaurants=$rest, favorite_food=$food\
+                WHERE user_id = $userID', {
+            $userID: userID,
+            $price: newMetrics.prefered_price,
+            $transMethod: newMetrics.prefered_transportation_method,
+            $history: JSON.stringify(newMetrics.history),
+            $rest: JSON.stringify(newMetrics.favorite_restaurants),
+            $food: JSON.stringify(newMetrics.favorite_food),
+          }, (err) => {
+            if (err) {
+              reject(err);
+            }
+            else {
+              resolve();
+            }
+          });
+      })
+      .catch((reason) => {
+        reject(reason);
+      });
+  });
+}
+
 module.exports = {
   getUser: getUser,
   getAllUsers: getAllUsers,
@@ -268,5 +296,6 @@ module.exports = {
   deleteUser: deleteUser,
   login: login,
   addUserMetrics: addUserMetrics,
-  getUserMetrics: getUserMetrics
+  getUserMetrics: getUserMetrics,
+  updateUserMetrics: updateUserMetrics
 };
