@@ -5,5 +5,9 @@ module.exports = {
   PRODUCTION: process.env.REMY_PROD || false,
   PROD_HOST: '138.197.133.17:10010', // Production host address and port number
   PROD_DB: process.env.PROD_DB || false,
+  DB_USER: process.env.DB_USER || '',
+  DB_PW: process.env.DB_PW || '',
+  DB_HOST: process.env.DB_HOST || 'localhost',
+  DB_PORT: process.env.DB_PORT || '3306',
   MORGAN_LOG: true
 };

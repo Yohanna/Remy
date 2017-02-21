@@ -1,5 +1,6 @@
 'use strict';
-const db = require('../../db/db');
+// const db = require('../../db/db');
+const db = require('../../db/db.mysql');
 
 function getUser(req, res) {
   const userID = req.swagger.params.id.value;
