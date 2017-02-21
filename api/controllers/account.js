@@ -10,7 +10,7 @@ function login(req, res) {
       res.send({ userID: userID });
     })
     .catch((reason) => {
-      if (reason.message === 'Forbidden') { // User doesn't exist
+      if (reason === 'Forbidden') { // User doesn't exist
         res.status(403).json({ message: 'Incorrect login info' });
       } else { // Different error
         res.send(reason);

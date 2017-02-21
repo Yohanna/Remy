@@ -37,7 +37,7 @@ function getUser(userID) {
     db.query('SELECT * FROM users WHERE ?', condition, (err, row) => {
       if (err) { return reject(err); }
       else if (row.length === 0) {
-        reject({ message: 'User does not exist' });
+        reject('User does not exist');
       } else {
         resolve(row);
       }
@@ -165,7 +165,7 @@ function login(userInfo) {
           if (err) {
             reject(err);
           } else if (row === undefined) {
-            reject({ message: 'Forbidden' });
+            reject('Forbidden');
           }
           else {
             // Return user's ID

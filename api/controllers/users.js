@@ -10,7 +10,7 @@ function getUser(req, res) {
       res.send(result);
     })
     .catch(function (reason) {
-      res.status(404).json(reason);
+      res.status(404).json({ message: reason });
     });
 }
 
