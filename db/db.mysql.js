@@ -185,27 +185,18 @@ function login(userInfo) {
  */
 function getUserMetrics(userID) {
   return new Promise((resolve, reject) => {
-    initializeDB()
-      .then((db) => {
-        db.get('SELECT * FROM user_metrics WHERE user_id = $userID', { $userID: userID }, (err, row) => {
-          if (err) {
-            reject(err);
-          }
-          else if (row === undefined) {
-            reject('User metrics does not exist');
-          } else {
-            // Convert back string objects to actual Objects
-            row.history = JSON.parse(row.history);
-            row.favorite_restaurants = JSON.parse(row.favorite_restaurants);
-            row.favorite_food = JSON.parse(row.favorite_food);
-            resolve(row);
-          }
-
-        });
-      })
-      .catch((reason) => {
-        reject(reason);
-      });
+    const condition = { user_id: userID };
+    db.get('SELECT * FROM user_metrics WHERE ?', condition, (err, row) => {
+      if (err) { return reject(err); }
+      else if (row.length === 0) { reject('User metrics does not exist'); }
+      else {
+        // Convert back string objects to actual Objects
+        row.history = JSON.parse(row.history);
+        row.favorite_restaurants = JSON.parse(row.favorite_restaurants);
+        row.favorite_food = JSON.parse(row.favorite_food);
+        resolve(row);
+      }
+    });
   });
 }
 
