@@ -1,7 +1,7 @@
 const winston = require('winston');
 
 /**
- * Available levers: Info, Warn, Error
+ * Available levels: Info, Warn, Error
  */
 
 const logger = module.exports = new (winston.Logger)({
