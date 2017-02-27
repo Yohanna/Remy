@@ -4,7 +4,7 @@ const mysql = require('mysql');
 const config = require('../config/config');
 const logger = require('../helpers/logger');
 
-// logger.info(`Using DB: ${DB_USED}`);
+logger.info(`Using DB: ${config.DB_HOST}`);
 
 const db = mysql.createConnection({
   host: config.DB_HOST,
@@ -17,15 +17,6 @@ db.connect((err) => {
   if (err) { throw err; }
 });
 
-// function initializeDB() {
-//   return new Promise((resolve, reject) => {
-//     connection.connect((err) => {
-//       if (err) { return reject(err); }
-//       resolve(connection);
-//     });
-//   });
-// }
-
 
 /**
  * @description Gets a user from db
@@ -33,13 +24,12 @@ db.connect((err) => {
  */
 function getUser(userID) {
   return new Promise((resolve, reject) => {
-    const condition = { id: userID };
-    db.query('SELECT * FROM users WHERE ?', condition, (err, row) => {
+    db.query('SELECT * FROM users WHERE id=?', [userID], (err, result) => {
       if (err) { return reject(err); }
-      else if (row.length === 0) {
+      else if (result.length === 0) {
         reject('User does not exist');
       } else {
-        resolve(row);
+        resolve(result[0]);
       }
     });
   });
@@ -65,32 +55,18 @@ function getAllUsers() {
  */
 function addUser(newUser) {
   return new Promise((resolve, reject) => {
-    initializeDB()
-      .then((db) => {
-        db.run(`INSERT INTO users(email,name,password, gender, student)
-                VALUES ($email, $name, $pass, $gender, $student)`, {
-            $name: newUser.name,
-            $email: newUser.email,
-            $pass: newUser.password,
-            $gender: newUser.gender,
-            $student: newUser.student
-          }, (err) => {
-            if (err) {
-              reject(err);
-            }
-          })
-          // Select the same user to return it's ID
-          .get('SELECT * FROM users WHERE email = $email', { $email: newUser.email }, (err, row) => {
-            if (err) {
-              reject(err);
-            }
-            else {
-              resolve(row.id);
-            }
-          });
-      })
-      .catch((reason) => {
-        reject(reason);
+    db.query(`INSERT INTO users(email,name,password, gender, student)
+                VALUES (?, ?, ?, ?, ?)`,
+      [newUser.name,
+      newUser.email,
+      newUser.password,
+      newUser.gender,
+      newUser.student], (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result.insertId);
+        }
       });
   });
 }
@@ -102,25 +78,19 @@ function addUser(newUser) {
  */
 function updateUser(userID, user) {
   return new Promise((resolve, reject) => {
-    initializeDB()
-      .then((db) => {
-        db.run('UPDATE users SET name = $name, email = $email, password = $pass WHERE id = $id', {
-          $id: userID,
-          $name: user.name,
-          $email: user.email,
-          $pass: user.password
-        }, (err) => {
-          if (err) {
-            reject(err);
-          }
-          else {
-            resolve();
-          }
-        });
-      })
-      .catch((reason) => {
-        reject(reason);
-      });
+    db.query('UPDATE users SET name=?, email=?, password=? WHERE id=?', [
+      user.name,
+      user.email,
+      user.password,
+      userID
+    ], (err, result) => {
+      if (err) {
+        reject(err);
+      }
+      else {
+        resolve();
+      }
+    });
   });
 }
 
@@ -130,20 +100,14 @@ function updateUser(userID, user) {
  */
 function deleteUser(userID) {
   return new Promise((resolve, reject) => {
-    initializeDB()
-      .then((db) => {
-        db.run('DELETE FROM users WHERE id = $id', { $id: userID }, (err) => {
-          if (err) {
-            reject(err);
-          }
-          else {
-            resolve();
-          }
-        });
-      })
-      .catch((reason) => {
-        reject(reason);
-      });
+    db.query('DELETE FROM users WHERE id=?', [userID], (err) => {
+      if (err) {
+        reject(err);
+      }
+      else {
+        resolve();
+      }
+    });
   });
 }
 
@@ -156,26 +120,20 @@ function deleteUser(userID) {
  */
 function login(userInfo) {
   return new Promise((resolve, reject) => {
-    initializeDB()
-      .then((db) => {
-        db.get('SELECT * FROM users WHERE email = $email AND password = $password', {
-          $email: userInfo.email,
-          $password: userInfo.password
-        }, (err, row) => {
-          if (err) {
-            reject(err);
-          } else if (row === undefined) {
-            reject('Forbidden');
-          }
-          else {
-            // Return user's ID
-            resolve(row.id);
-          }
-        });
-      })
-      .catch((reason) => {
-        reject(reason);
-      });
+    db.query('SELECT * FROM users WHERE email=? AND password=?', [
+      userInfo.email,
+      userInfo.password
+    ], (err, result) => {
+      if (err) {
+        reject(err);
+      } else if (result.length === 0) {
+        reject('Forbidden');
+      }
+      else {
+        // Return user's ID
+        resolve(result[0].id);
+      }
+    });
   });
 }
 
@@ -185,16 +143,15 @@ function login(userInfo) {
  */
 function getUserMetrics(userID) {
   return new Promise((resolve, reject) => {
-    const condition = { user_id: userID };
-    db.get('SELECT * FROM user_metrics WHERE ?', condition, (err, row) => {
+    db.query('SELECT * FROM user_metrics WHERE user_id=?', [userID], (err, result) => {
       if (err) { return reject(err); }
-      else if (row.length === 0) { reject('User metrics does not exist'); }
+      else if (result.length === 0) { reject('User metrics does not exist'); }
       else {
         // Convert back string objects to actual Objects
-        row.history = JSON.parse(row.history);
-        row.favorite_restaurants = JSON.parse(row.favorite_restaurants);
-        row.favorite_food = JSON.parse(row.favorite_food);
-        resolve(row);
+        result[0].history = JSON.parse(result[0].history);
+        result[0].favorite_restaurants = JSON.parse(result[0].favorite_restaurants);
+        result[0].favorite_food = JSON.parse(result[0].favorite_food);
+        resolve(result);
       }
     });
   });
@@ -214,57 +171,45 @@ function getUserMetrics(userID) {
  */
 function addUserMetrics(userID, userMetrics) {
   return new Promise((resolve, reject) => {
-    initializeDB()
-      .then((db) => {
-        db.run(`INSERT INTO user_metrics (user_id, prefered_price, prefered_transportation_method,
+    db.query(`INSERT INTO user_metrics (user_id, prefered_price, prefered_transportation_method,
                 history, favorite_restaurants, favorite_food)
-                VALUES ($userID, $price, $transMethod, $history, $favRest, $favFood)`, {
-            $userID: userID,
-            $price: userMetrics.prefered_price,
-            $transMethod: userMetrics.prefered_transportation_method,
-            $history: JSON.stringify(userMetrics.history),
-            $favRest: JSON.stringify(userMetrics.favorite_restaurants),
-            $favFood: JSON.stringify(userMetrics.favorite_food)
-          }, (err) => {
-            if (err) {
-              reject(err);
-            }
-            else {
-              resolve();
-            }
-          });
-      })
-      .catch((reason) => {
-        reject(reason);
-      });
+                VALUES (?, ?, ?, ?, ?, ?)`, [
+        userID,
+        userMetrics.prefered_price,
+        userMetrics.prefered_transportation_method,
+        JSON.stringify(userMetrics.history),
+        JSON.stringify(userMetrics.favorite_restaurants),
+        JSON.stringify(userMetrics.favorite_food)], (err) => {
+          if (err) {
+            reject(err);
+          }
+          else {
+            resolve();
+          }
+        });
   });
 }
 
 
 function updateUserMetrics(userID, newMetrics) {
   return new Promise((resolve, reject) => {
-    initializeDB()
-      .then((db) => {
-        db.run('UPDATE user_metrics\
-                SET prefered_price=$price, prefered_transportation_method=$transMethod, history=$history, favorite_restaurants=$rest, favorite_food=$food\
-                WHERE user_id = $userID', {
-            $userID: userID,
-            $price: newMetrics.prefered_price,
-            $transMethod: newMetrics.prefered_transportation_method,
-            $history: JSON.stringify(newMetrics.history),
-            $rest: JSON.stringify(newMetrics.favorite_restaurants),
-            $food: JSON.stringify(newMetrics.favorite_food),
-          }, (err) => {
-            if (err) {
-              reject(err);
-            }
-            else {
-              resolve();
-            }
-          });
-      })
-      .catch((reason) => {
-        reject(reason);
+    db.query(`UPDATE user_metrics
+                SET prefered_price=?, prefered_transportation_method=?, history=?,
+                favorite_restaurants=?, favorite_food=?
+                WHERE user_id=?`, [
+        newMetrics.prefered_price,
+        newMetrics.prefered_transportation_method,
+        JSON.stringify(newMetrics.history),
+        JSON.stringify(newMetrics.favorite_restaurants),
+        JSON.stringify(newMetrics.favorite_food),
+        userID
+      ], (err) => {
+        if (err) {
+          reject(err);
+        }
+        else {
+          resolve();
+        }
       });
   });
 }
