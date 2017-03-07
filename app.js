@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config();
+
 const SwaggerExpress = require('swagger-express-mw');
 const app = require('express')();
 const SwaggerUi = require('swagger-tools/middleware/swagger-ui');
@@ -8,8 +10,6 @@ const config = require('./config/config');
 const logger = require('./helpers/logger');
 const morgan = require('morgan');
 const geolib = require('geolib');
-
-require('dotenv').config();
 
 // Print HTTP VERB logs
 if (config.MORGAN_LOG) { app.use(morgan('dev')); }
@@ -25,7 +25,7 @@ const swaggerConfig = {
 SwaggerExpress.create(swaggerConfig, function (err, swaggerExpress) {
   if (err) { throw err; }
 
-  if (config.PRODUCTION) {
+  if (config.PRODUCTION === 'true' || config.PRODUCTION === true) {
     logger.info('Running in Production');
     swaggerExpress.runner.swagger.host = config.PROD_HOST;
   }
