@@ -2,11 +2,13 @@
 const config = require('../config/config');
 const logger = require('../helpers/logger');
 const geolib = require('geolib');
+var GoogleLocations = require('google-locations');
 const db = require('../db/db');
 const preferenceConst = 1.25;
 const walkingConst = 0.5;
 const drivingConst = 0.8;
 
+var locations = new GoogleLocations(config.API_KEY);
 const googleMapClient = require('@google/maps').createClient({
     key: config.API_KEY
 });
@@ -48,7 +50,7 @@ function rank(params) {
             } else {
                 apiList = response.json.results;
 
-                for(let i = 0; i < apiList.length; i++){
+                for (let i = 0; i < apiList.length; i++) {
                     apiList[i].preference = false;
                     apiList[i].rank = i;
                     apiList[i].distance = geolib.getDistance(apiList[i].geometry.location, user_location);
@@ -75,8 +77,10 @@ function rank(params) {
 
                             apiList = sort_by_weight(apiList, params.distance.value);
 
-                            // Return the first restaurants_count from the list or 10 if no count is provided
-                            resolve(apiList.slice(0, params.restaurants_count.value || 10));
+                            //Get details on the first restaurants_count from the list or 10 if no count is provided
+                            getDetails(apiList.slice(0, params.restaurants_count.value || 10)).then((finalList) => {
+                                resolve(finalList);
+                            });
                         })
                         .catch((reason) => {
                             return reject(reason);
@@ -87,8 +91,10 @@ function rank(params) {
 
                     apiList = sort_by_weight(apiList, params.distance.value);
 
-                    // Return the first restaurants_count from the list or 10 if no count is provided
-                    resolve(apiList.slice(0, params.restaurants_count.value || 10));
+                    //Get details on the first restaurants_count from the list or 10 if no count is provided
+                    getDetails(apiList.slice(0, params.restaurants_count.value || 10)).then((finalList) => {
+                        resolve(finalList);
+                    });
 
                 }
             }
@@ -104,7 +110,7 @@ function getCustomList(user_id, query, user_loc) {
                 let userPreferences = userMetrics[0].favorite_food;
                 let iterations = 0;
 
-                for(let i = 0; i < userPreferences.length; i++){
+                for (let i = 0; i < userPreferences.length; i++) {
                     // Add the user's preferences to the query
                     query.keyword = userPreferences[i];
 
@@ -113,10 +119,10 @@ function getCustomList(user_id, query, user_loc) {
                             logger.error('Google Maps API called failed');
                             return reject(err);
                         }
-                    
+
                         let returnedList = response.json.results.slice(0, 5);
 
-                        for(let i = 0; i < returnedList.length; i++){
+                        for (let i = 0; i < returnedList.length; i++) {
                             returnedList[i].preference = true;
                             returnedList[i].rank = i;
                             returnedList[i].distance = geolib.getDistance(returnedList[i].geometry.location, user_loc);
@@ -124,7 +130,7 @@ function getCustomList(user_id, query, user_loc) {
 
                         preferenceList = preferenceList.concat(returnedList);
                         iterations++;
-                        if(iterations === userPreferences.length){
+                        if (iterations === userPreferences.length) {
                             return resolve(preferenceList);
                         }
                     });
@@ -138,7 +144,7 @@ function getCustomList(user_id, query, user_loc) {
 
 function removeDuplicates(arr) {
     for (let i = 0; i < arr.length; i++) {
-        for(let j = 0; j < arr.length - 1; j++){
+        for (let j = 0; j < arr.length - 1; j++) {
             if (arr[j].place_id === arr[i].place_id) {
                 //exact same location. Keep best preference and rank value and remove one
                 let preference = ((arr[j].preference == true)) || (arr[i].preference == true);
@@ -147,7 +153,7 @@ function removeDuplicates(arr) {
                 arr[i].preference = preference;
                 arr[i].rank = rank;
             }
-            else if(arr[j].name === arr[i].name){
+            else if (arr[j].name === arr[i].name) {
                 //same name so different branches of the same place. Choose the closest and maintain the best 
                 //of preference and rank
                 let chosen = (arr[j].distance < arr[i].distance) ? j : i;
@@ -165,26 +171,26 @@ function removeDuplicates(arr) {
 
 //personal should just be sent as a 1 until it has been added to user profile
 //this function does not account for locations missing fields. If fields are missing that should be handled elsewhere
-function getWeight(rating, rank, listSize, personal, preference, distance, radius, prefersWalking){
+function getWeight(rating, rank, listSize, personal, preference, distance, radius, prefersWalking) {
     let multiplier, preferenceM, personalM, distanceM, normalRank, weight;
 
-    personalM = personal;   
+    personalM = personal;
 
     preferenceM = (preference == true) ? preferenceConst : 1;
 
-    distanceM = Math.exp((Math.log((prefersWalking == true) ? walkingConst : drivingConst))/radius);
+    distanceM = Math.exp((Math.log((prefersWalking == true) ? walkingConst : drivingConst)) / radius);
 
-    normalRank = (-1*(rank - (listSize - 1)))/(listSize - 1);
+    normalRank = (-1 * (rank - (listSize - 1))) / (listSize - 1);
 
-    multiplier = personalM*preferenceM*distanceM;
+    multiplier = personalM * preferenceM * distanceM;
 
-    weight = multiplier*(rating + normalRank);
+    weight = multiplier * (rating + normalRank);
 
     return weight;
 }
 
-function sort_by_weight(list, radius){
-    for(let i = 0; i < list.length; i++){
+function sort_by_weight(list, radius) {
+    for (let i = 0; i < list.length; i++) {
         //TODO set personal multiplier equal to value from user DB
         //TODO set transportation preference equal to value from user DB
         list[i].weight = getWeight(list[i].rating, i, list.length, 1, list[i].preference, list[i].distance, radius, true);
@@ -193,9 +199,28 @@ function sort_by_weight(list, radius){
     return list;
 }
 
-function weightSorting(x, y){
+function weightSorting(x, y) {
     //sort descendingly
     return (y.weight - x.weight);
+}
+
+function getDetails(list) {
+    let iterations = 0;
+    return new Promise((resolve, reject) => {
+        for (let i = 0; i < list.length; i++) {
+            locations.details({ placeid: list[i].place_id }, (error, response) => {
+                if (error) {
+                    logger.error('Places details request failed.');
+                    return reject(error);
+                }
+                list[i].details = response;
+                iterations++;
+                if (iterations === list.length) {
+                    return resolve(list);
+                }
+            })
+        }
+    });
 }
 
 module.exports.rank = rank;
