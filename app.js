@@ -7,6 +7,7 @@ const helmet = require('helmet');
 const config = require('./config/config');
 const logger = require('./helpers/logger');
 const morgan = require('morgan');
+const geolib = require('geolib');
 
 
 // Print HTTP VERB logs

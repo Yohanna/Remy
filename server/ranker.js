@@ -1,7 +1,11 @@
 'use strict';
 const config = require('../config/config');
 const logger = require('../helpers/logger');
+const geolib = require('geolib');
 const db = require('../db/db');
+const preferenceConst = 1.25;
+const walkingConst = 0.5;
+const drivingConst = 0.8;
 
 const googleMapClient = require('@google/maps').createClient({
     key: config.API_KEY
@@ -44,6 +48,12 @@ function rank(params) {
             } else {
                 apiList = response.json.results;
 
+                for(let i = 0; i < apiList.length; i++){
+                    apiList[i].preference = false;
+                    apiList[i].rank = i;
+                    apiList[i].distance = geolib.getDistance(apiList[i].geometry.location, user_location);
+                }
+
                 // If the user did Not supply a cuisine_type but we know the user (we have a user_id),
                 // then use the user's preferences from the DB
                 if (params.cuisine_type.value === undefined && user_id !== undefined) {
@@ -52,15 +62,18 @@ function rank(params) {
                     // 3. Return the new list and combine with the old one
                     // 4. Sort as usual
 
-                    getCustomList(user_id, query)
+                    getCustomList(user_id, query, user_location)
                         .then((newList) => {
+
                             apiList = apiList.concat(newList);
 
                             // Sort the list descendingly
-                            apiList.sort(compareRatings);
+                            //apiList.sort(compareRatings);
 
                             // Remove duplicate items
                             apiList = removeDuplicates(apiList);
+
+                            apiList = sort_by_weight(apiList, params.distance.value);
 
                             // Return the first restaurants_count from the list or 10 if no count is provided
                             resolve(apiList.slice(0, params.restaurants_count.value || 10));
@@ -70,7 +83,9 @@ function rank(params) {
                         });
                 } else {
                     // Sort the list descendingly
-                    apiList.sort(compareRatings);
+                    //apiList.sort(compareRatings);
+
+                    apiList = sort_by_weight(apiList, params.distance.value);
 
                     // Return the first restaurants_count from the list or 10 if no count is provided
                     resolve(apiList.slice(0, params.restaurants_count.value || 10));
@@ -81,33 +96,39 @@ function rank(params) {
     });
 }
 
-
-function compareRatings(x, y) {
-
-    // If no rating property, consider y to be smaller than x, i.e. move the item down the list
-    if (x.rating === undefined || y.rating === undefined)
-        return 1;
-
-    // Sort descendingly
-    return (y.rating - x.rating);
-}
-
-function getCustomList(user_id, query) {
+function getCustomList(user_id, query, user_loc) {
     return new Promise((resolve, reject) => {
         db.getUserMetrics(user_id)
             .then((userMetrics) => {
+                let preferenceList = [];
+                let userPreferences = userMetrics[0].favorite_food;
+                let iterations = 0;
 
-                // Add the user's preferences to the query
-                query.keyword = userMetrics.favorite_food[0];
+                for(let i = 0; i < userPreferences.length; i++){
+                    // Add the user's preferences to the query
+                    query.keyword = userPreferences[i];
 
-                googleMapClient.placesNearby(query, (err, response) => {
-                    if (err) {
-                        logger.error('Google Maps API called failed');
-                        return reject(err);
-                    }
+                    googleMapClient.placesNearby(query, (err, response) => {
+                        if (err) {
+                            logger.error('Google Maps API called failed');
+                            return reject(err);
+                        }
+                    
+                        let returnedList = response.json.results.slice(0, 5);
 
-                    return resolve(response.json.results);
-                });
+                        for(let i = 0; i < returnedList.length; i++){
+                            returnedList[i].preference = true;
+                            returnedList[i].rank = i;
+                            returnedList[i].distance = geolib.getDistance(returnedList[i].geometry.location, user_loc);
+                        }
+
+                        preferenceList = preferenceList.concat(returnedList);
+                        iterations++;
+                        if(iterations === userPreferences.length){
+                            return resolve(preferenceList);
+                        }
+                    });
+                }
             })
             .catch((reason) => {
                 logger.error(reason);
@@ -116,14 +137,65 @@ function getCustomList(user_id, query) {
 }
 
 function removeDuplicates(arr) {
-
-    for (let i = 0; i < arr.length - 1; i++) {
-        if (arr[i].place_id === arr[i + 1].place_id) {
-            arr.splice(i, 1);
+    for (let i = 0; i < arr.length; i++) {
+        for(let j = 0; j < arr.length - 1; j++){
+            if (arr[j].place_id === arr[i].place_id) {
+                //exact same location. Keep best preference and rank value and remove one
+                let preference = ((arr[j].preference == true)) || (arr[i].preference == true);
+                let rank = (arr[i].rank < arr[j]) ? arr[i].rank : arr[j].rank;
+                arr.splice(j, 1);
+                arr[i].preference = preference;
+                arr[i].rank = rank;
+            }
+            else if(arr[j].name === arr[i].name){
+                //same name so different branches of the same place. Choose the closest and maintain the best 
+                //of preference and rank
+                let chosen = (arr[j].distance < arr[i].distance) ? j : i;
+                let preference = ((arr[j].preference == true)) || (arr[i].preference == true);
+                let rank = (arr[i].rank < arr[j]) ? arr[i].rank : arr[j].rank;
+                arr.splice(((chosen === i) ? j : i), 1);
+                arr[chosen].preference = preference;
+                arr[chosen].rank = rank;
+            }
         }
     }
 
     return arr;
+}
+
+//personal should just be sent as a 1 until it has been added to user profile
+//this function does not account for locations missing fields. If fields are missing that should be handled elsewhere
+function getWeight(rating, rank, listSize, personal, preference, distance, radius, prefersWalking){
+    let multiplier, preferenceM, personalM, distanceM, normalRank, weight;
+
+    personalM = personal;   
+
+    preferenceM = (preference == true) ? preferenceConst : 1;
+
+    distanceM = Math.exp((Math.log((prefersWalking == true) ? walkingConst : drivingConst))/radius);
+
+    normalRank = (-1*(rank - (listSize - 1)))/(listSize - 1);
+
+    multiplier = personalM*preferenceM*distanceM;
+
+    weight = multiplier*(rating + normalRank);
+
+    return weight;
+}
+
+function sort_by_weight(list, radius){
+    for(let i = 0; i < list.length; i++){
+        //TODO set personal multiplier equal to value from user DB
+        //TODO set transportation preference equal to value from user DB
+        list[i].weight = getWeight(list[i].rating, i, list.length, 1, list[i].preference, list[i].distance, radius, true);
+    }
+    list.sort(weightSorting);
+    return list;
+}
+
+function weightSorting(x, y){
+    //sort descendingly
+    return (y.weight - x.weight);
 }
 
 module.exports.rank = rank;
