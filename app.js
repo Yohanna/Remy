@@ -9,6 +9,7 @@ const logger = require('./helpers/logger');
 const morgan = require('morgan');
 const geolib = require('geolib');
 
+require('dotenv').config();
 
 // Print HTTP VERB logs
 if (config.MORGAN_LOG) { app.use(morgan('dev')); }
