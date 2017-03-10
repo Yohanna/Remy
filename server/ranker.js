@@ -89,7 +89,11 @@ function rank(params) {
                     // Sort the list descendingly
                     //apiList.sort(compareRatings);
 
+                    //added because now this also removes restaurants that share a name
+                    apiList = removeDuplicates(apiList);
+
                     apiList = sort_by_weight(apiList, params.distance.value);
+
 
                     //Get details on the first restaurants_count from the list or 10 if no count is provided
                     getDetails(apiList.slice(0, params.restaurants_count.value || 10)).then((finalList) => {
