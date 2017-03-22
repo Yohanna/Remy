@@ -422,24 +422,11 @@ paths:
 definitions:
 
   RestaurantsListResponse:
-    required:
-      - id
-      - name
     properties:
-      id:
-        type: string
-        description: A unique ID for referencing this location through Google
-      name:
-        type: string
-        description: The name of the restaurant
-      lat:
-        type: number
-        format: double
-        description: The latitude of the restaurant
-      lng:
-        type: number
-        format: double
-        description: The longitude of the restaurant
+      list:
+        type: object
+        description: A list of restaurants
+
         
   HelloWorldResponse:
     required:
