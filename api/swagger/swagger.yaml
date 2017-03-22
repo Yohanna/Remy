@@ -289,6 +289,71 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"  
+            
+  /users/{id}/recent_search:
+    x-swagger-router-controller: recent_search
+    get:
+      description: Get a user's recent search
+      operationId: getRecentSearch
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the User to get their recent search
+          type: integer
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: object
+            properties:
+              timestamp:
+                type: string
+              restaurants:
+                type: array
+                items:
+                  $ref: '#/definitions/RestaurantsListResponse'
+
+        "404":
+          description: User does not have a recent search
+          schema:
+           title: ErrorResponse
+           type: object
+           properties:
+            message:
+              type: string 
+              default: User does not have a recent search       
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  
+    post:
+      description: Store a user recent search
+      operationId: addRecentSearch
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the User to add the search for
+          type: integer
+          required: true
+        - name: SearchResults
+          in: body
+          required: true
+          description: Search results
+          schema:
+            $ref: '#/definitions/RestaurantsListResponse'
+      responses:
+        "201":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"  
   
   /account/login:
     x-swagger-router-controller: account
