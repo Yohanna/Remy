@@ -5,6 +5,7 @@
     "allowJs": true,
     "alwaysStrict": true,
     "target": "es2015",
+    "module": "commonjs",
     "sourceMap": true,
     "pretty": true
   },
