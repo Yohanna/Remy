@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "outDir": "./built",
     "rootDir": "./",
+    "outDir": "./dist",
     "allowJs": true,
     "alwaysStrict": true,
-    "target": "es2016",
-    "sourceMap": true
+    "target": "es2015",
+    "sourceMap": true,
+    "pretty": true
   },
   "exclude": [
     "node_modules"
