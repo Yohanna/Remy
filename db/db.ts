@@ -1,8 +1,8 @@
 'use strict';
 
 const mysql = require('mysql');
-const config = require('../config/config');
-const logger = require('../helpers/logger');
+import * as config from "../config/config";
+import * as logger from '../helpers/logger';
 
 logger.info(`Using DB: ${config.DB_HOST}`);
 
