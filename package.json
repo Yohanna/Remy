@@ -7,6 +7,7 @@
   "scripts": {
     "start": "swagger project start",
     "debug": "export DEBUG=swagger-tools:middleware:* || set DEBUG=swagger-tools:middleware:*&& npm start",
+    "build": "tsc",
     "test": "swagger project test",
     "lint": "eslint ."
   },
