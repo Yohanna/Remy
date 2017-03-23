@@ -17,6 +17,14 @@ db.connect((err) => {
   if (err) { throw err; }
 });
 
+interface Metrics {
+  user_id: number,
+  prefered_price: number,
+  prefered_transportation_method: string,
+  history: any[],
+  favorite_restaurants: any[],
+  favorite_food: string[]
+}
 
 /**
  * @description Gets a user from db
@@ -160,16 +168,11 @@ function getUserMetrics(userID) {
 
 /**
  * 
- * 
+ * @description Adds a new user metrics
  * @param {Number} userID
- * @param {Object} userMetrics
- * @param {integer} userMetrics.prefered_price
- * @param {string} userMetrics.prefered_transportation_method
- * @param {Array} userMetrics.history
- * @param {Array} userMetrics.favorite_restaurants
- * @param {Array} userMetrics.favorite_food
+ * @param {Metrics} userMetrics
  */
-function addUserMetrics(userID, userMetrics) {
+function addUserMetrics(userID, userMetrics: Metrics) {
   return new Promise((resolve, reject) => {
     db.query(`INSERT INTO user_metrics (user_id, prefered_price, prefered_transportation_method,
                 history, favorite_restaurants, favorite_food)
