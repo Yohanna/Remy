@@ -26,6 +26,23 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "TypeScript",
+      "sourceMaps": true,
+      // "stopOnEntry": true,
+      "console": "internalConsole",
+      "cwd": "${workspaceRoot}",
+      "program": "${workspaceRoot}/app.js",
+      "preLaunchTask": "build",
+      "outFiles": [
+        "${workspaceRoot}/dist/**/*.js"
+      ],
+      "skipFiles": [
+        "node_modules/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch Program",
       "program": "${workspaceRoot}\\app.js",
       "cwd": "${workspaceRoot}"
