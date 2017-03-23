@@ -31,7 +31,7 @@
       // "stopOnEntry": true,
       "console": "internalConsole",
       "cwd": "${workspaceRoot}",
-      "program": "${workspaceRoot}/app.js",
+      "program": "${workspaceRoot}/app.ts",
       "preLaunchTask": "build",
       "outFiles": [
         "${workspaceRoot}/dist/**/*.js"
