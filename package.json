@@ -7,7 +7,9 @@
   "scripts": {
     "start": "swagger project start",
     "debug": "export DEBUG=swagger-tools:middleware:* || set DEBUG=swagger-tools:middleware:*&& npm start",
-    "build": "tsc",
+    "build": "tsc && npm run copy-files",
+    "build:w": "tsc -w",
+    "copy-files": "copyfiles ./config/default.yaml ./dist/ && copyfiles ./api/swagger/* ./dist/",
     "test": "swagger project test",
     "lint": "eslint ."
   },
@@ -27,9 +29,10 @@
     "winston": "^2.3.0"
   },
   "devDependencies": {
+    "copyfiles": "^1.2.0",
     "eslint": "^3.10.2",
+    "nodemon": "1.11.0",
     "should": "^8.4.0",
-    "supertest": "^1.2.0",
-    "nodemon": "1.11.0"
+    "supertest": "^1.2.0"
   }
 }
