@@ -3,6 +3,7 @@
 const mysql = require('mysql');
 import * as config from '../config/config';
 import * as logger from '../helpers/logger';
+import { Metrics, SearchResult, UserAction } from './db.d';
 
 logger.info(`Using DB: ${config.DB_HOST}`);
 
@@ -17,14 +18,6 @@ db.connect((err) => {
   if (err) { throw err; }
 });
 
-interface Metrics {
-  user_id: number,
-  prefered_price: number,
-  prefered_transportation_method: string,
-  history: any[],
-  favorite_restaurants: any[],
-  favorite_food: string[]
-}
 
 /**
  * @description Gets a user from db
