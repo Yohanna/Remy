@@ -2,13 +2,13 @@
 const config = require('../config/config');
 const logger = require('../helpers/logger');
 const geolib = require('geolib');
-var GoogleLocations = require('google-locations');
+const GoogleLocations = require('google-locations');
 const db = require('../db/db');
 const preferenceConst = 1.25;
 const walkingConst = 0.5;
 const drivingConst = 0.8;
 
-var locations = new GoogleLocations(config.API_KEY);
+const googleLocations = new GoogleLocations(config.API_KEY);
 const googleMapClient = require('@google/maps').createClient({
     key: config.API_KEY
 });
@@ -212,7 +212,7 @@ function getDetails(list) {
     let iterations = 0;
     return new Promise((resolve, reject) => {
         for (let i = 0; i < list.length; i++) {
-            locations.details({ placeid: list[i].place_id }, (error, response) => {
+            googleLocations.details({ placeid: list[i].place_id }, (error, response) => {
                 if (error) {
                     logger.error('Places details request failed.');
                     return reject(error);
@@ -222,7 +222,7 @@ function getDetails(list) {
                 if (iterations === list.length) {
                     return resolve(list);
                 }
-            })
+            });
         }
     });
 }
