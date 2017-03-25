@@ -346,7 +346,65 @@ paths:
           required: true
           description: Search results results
           schema:
-            $ref: '#/definitions/RestaurantsListResponse'
+            $ref: '#/definitions/RecentSearch'
+      responses:
+        "201":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /users/{id}/user_action:
+    x-swagger-router-controller: user_actions
+    get:
+      description: Get a user's actions
+      operationId: getUserAction
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the User to get their action
+          type: integer
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/UserAction'
+
+        "404":
+          description: User does not have a recent search
+          schema:
+           title: ErrorResponse
+           type: object
+           properties:
+            message:
+              type: string 
+              default: User does not have a recent search       
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  
+    post:
+      description: Store a user action
+      operationId: addUserAction
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the User to add the action for
+          type: integer
+          required: true
+        - name: UserAction
+          in: body
+          required: true
+          description: User Actions
+          schema:
+            $ref: '#/definitions/UserAction'
       responses:
         "201":
           description: Success
