@@ -566,6 +566,7 @@ definitions:
           type: string
         description: User's favorite food
         
+        
   History:
     properties:
       name:
@@ -589,3 +590,18 @@ definitions:
             restaurant_rank:
               type: integer
 
+  UserAction:
+    properties:
+      user_id:
+        type: integer
+      restaurant_id:
+        type: integer
+      action:
+        type: string
+        enum:
+          - click
+          - directions
+          - more_info
+      timestamp:
+        type: string
+        format: date-time
