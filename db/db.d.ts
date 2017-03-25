@@ -16,5 +16,12 @@ export interface UserAction {
   user_id: number,
   restaurant_id: number,
   action: "click" | "directions" | "more_info",
-  timestamp: string
+  timestamp: Date
+}
+
+export interface UserResult {
+  user_id: number,
+  restaurant_id: number,
+  restaurant_rank: number,
+  timestamp: Date
 }
