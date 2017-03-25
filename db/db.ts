@@ -3,7 +3,7 @@
 const mysql = require('mysql');
 import * as config from '../config/config';
 import * as logger from '../helpers/logger';
-import { Metrics, SearchResult, UserAction } from './db.d';
+import { Metrics, RecentSearch, UserAction } from './db.d';
 
 logger.info(`Using DB: ${config.DB_HOST}`);
 

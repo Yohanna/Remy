@@ -7,9 +7,9 @@ export interface Metrics {
   favorite_food: string[]
 }
 
-export interface SearchResult {
+export interface RecentSearch {
   user_id: number,
-  restaurants_list: object,
+  restaurants: { [index: number]: { restaurant_id: number, restaurant_rank: number } },
   timestamp: string
 }
 
