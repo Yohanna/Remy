@@ -293,7 +293,7 @@ paths:
   /users/{id}/recent_search:
     x-swagger-router-controller: recent_search
     get:
-      description: Get a user's recent search
+      description: Get a user's most recent search
       operationId: getRecentSearch
       tags:
         - Users
@@ -344,7 +344,7 @@ paths:
         - name: SearchResults
           in: body
           required: true
-          description: Search results
+          description: Search results results
           schema:
             $ref: '#/definitions/RestaurantsListResponse'
       responses:
@@ -353,7 +353,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"  
+            $ref: "#/definitions/ErrorResponse"
   
   /account/login:
     x-swagger-router-controller: account
@@ -517,4 +517,17 @@ definitions:
         type: string
         format: date
         description: Date visited
+        
+  RecentSearch:
+    properties:
+      user_id:
+        type: integer
+      restaurants:
+        type: array
+        items:
+          properties:
+            restaurant_id:
+              type: string
+            restaurant_rank:
+              type: integer
 
