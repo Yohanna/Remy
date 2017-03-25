@@ -9,11 +9,12 @@ export interface Metrics {
 
 export interface RecentSearch {
   user_id: number,
-  restaurants: { [index: number]: { restaurant_id: number, restaurant_rank: number } },
-  timestamp: string
+  restaurants: { [index: number]: { restaurant_id: number, restaurant_rank: number } }
 }
 
 export interface UserAction {
   user_id: number,
+  restaurant_id: number,
+  action: "click" | "directions" | "more_info",
   timestamp: string
 }
