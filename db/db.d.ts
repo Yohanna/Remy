@@ -12,9 +12,16 @@ export interface RecentSearch {
   restaurants: { [index: number]: { restaurant_id: number, restaurant_rank: number } }
 }
 
-export interface UserAction {
+export interface UserActions {
   user_id: number,
   restaurant_id: number,
   action: "click" | "directions" | "more_info",
-  timestamp: string
+  timestamp: Date
+}
+
+export interface UserResults {
+  user_id: number,
+  restaurant_id: number,
+  restaurant_rank: number,
+  timestamp: Date
 }
