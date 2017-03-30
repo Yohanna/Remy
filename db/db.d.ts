@@ -1,3 +1,15 @@
+export interface LoginInfo {
+  email: string,
+  password: string
+}
+
+export interface User extends LoginInfo {
+  name: string,
+  gender: string,
+  student: boolean
+}
+
+
 export interface Metrics {
   user_id: number,
   prefered_price: number,

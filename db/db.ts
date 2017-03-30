@@ -3,7 +3,7 @@
 const mysql = require('mysql');
 import * as config from '../config/config';
 import * as logger from '../helpers/logger';
-import { Metrics, RecentSearch, UserAction, UserResult } from './db.d';
+import { LoginInfo, User, Metrics, RecentSearch, UserAction, UserResult } from './db.d';
 
 logger.info(`Using DB: ${config.DB_HOST}`);
 
@@ -23,7 +23,7 @@ db.connect((err) => {
  * @description Gets a user from db
  * @param {number} userID User ID to get
  */
-function getUser(userID) {
+export function getUser(userID: number) {
   return new Promise((resolve, reject) => {
     db.query('SELECT * FROM users WHERE id=?', [userID], (err, result) => {
       if (err) { return reject(err); }
@@ -40,7 +40,7 @@ function getUser(userID) {
  *  Gets all the users in the DB 
  * @returns {Promise} A promise containing an array of all users rows
  */
-function getAllUsers() {
+export function getAllUsers(): Promise<object> {
   return new Promise((resolve, reject) => {
     db.query('SELECT * FROM users', (err, rows) => {
       if (err) { return reject(err); }
@@ -54,7 +54,7 @@ function getAllUsers() {
  * @param {Object} newUser New user to add
  * @returns {Promise} A Promise that resolves to the new User ID created
  */
-function addUser(newUser) {
+export function addUser(newUser: User) {
   return new Promise((resolve, reject) => {
     db.query(`INSERT INTO users(email,name,password, gender, student)
                 VALUES (?, ?, ?, ?, ?)`,
@@ -74,10 +74,8 @@ function addUser(newUser) {
 
 /**
  * @description Update a user's information
- * @param {number} userID
- * @param {Object} user
  */
-function updateUser(userID, user) {
+export function updateUser(userID: number, user: User) {
   return new Promise((resolve, reject) => {
     db.query('UPDATE users SET name=?, email=?, password=? WHERE id=?', [
       user.name,
@@ -99,7 +97,7 @@ function updateUser(userID, user) {
  * @description Delete a user's
  * @param {number} userID
  */
-function deleteUser(userID) {
+export function deleteUser(userID: number) {
   return new Promise((resolve, reject) => {
     db.query('DELETE FROM users WHERE id=?', [userID], (err) => {
       if (err) {
@@ -114,12 +112,8 @@ function deleteUser(userID) {
 
 /**
  * @description Checks if a user exists in the DB and returns the user's ID if it does
- * 
- * @param {Object} userInfo
- * @param {string} userInfo.email
- * @param {ng} userInfo.password
  */
-function login(userInfo) {
+export function login(userInfo: LoginInfo) {
   return new Promise((resolve, reject) => {
     db.query('SELECT * FROM users WHERE email=? AND password=?', [
       userInfo.email,
@@ -139,10 +133,9 @@ function login(userInfo) {
 }
 
 /**
- * @description Returns a single user metrics
- * @param {Number} userID User ID to get the metrics for
+ * Returns a single user metrics
  */
-function getUserMetrics(userID) {
+export function getUserMetrics(userID: number) {
   return new Promise((resolve, reject) => {
     db.query('SELECT * FROM user_metrics WHERE user_id=?', [userID], (err, result) => {
       if (err) { return reject(err); }
@@ -165,7 +158,7 @@ function getUserMetrics(userID) {
  * @param {Number} userID
  * @param {Metrics} userMetrics
  */
-function addUserMetrics(userID, userMetrics: Metrics) {
+export function addUserMetrics(userID, userMetrics: Metrics) {
   return new Promise((resolve, reject) => {
     db.query(`INSERT INTO user_metrics (user_id, prefered_price, prefered_transportation_method,
                 history, favorite_restaurants, favorite_food)
@@ -187,7 +180,7 @@ function addUserMetrics(userID, userMetrics: Metrics) {
 }
 
 
-function updateUserMetrics(userID, newMetrics) {
+export function updateUserMetrics(userID, newMetrics) {
   return new Promise((resolve, reject) => {
     db.query(`UPDATE user_metrics
                 SET prefered_price=?, prefered_transportation_method=?, history=?,
@@ -210,14 +203,14 @@ function updateUserMetrics(userID, newMetrics) {
   });
 }
 
-module.exports = {
-  getUser: getUser,
-  getAllUsers: getAllUsers,
-  addUser: addUser,
-  updateUser: updateUser,
-  deleteUser: deleteUser,
-  login: login,
-  addUserMetrics: addUserMetrics,
-  getUserMetrics: getUserMetrics,
-  updateUserMetrics: updateUserMetrics
-};
+export function getRecentSearch(userID: number) {
+}
+
+export function addRecentSearch(search: RecentSearch) {
+}
+
+export function getUserAction(userID: number) {
+}
+
+export function addUserAction(search: UserAction) {
+}
