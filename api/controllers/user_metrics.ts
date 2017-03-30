@@ -1,5 +1,5 @@
 'use strict';
-const db = require('../../db/db');
+import * as db from '../../db/db';
 
 
 function getUserMetrics(req, res) {
