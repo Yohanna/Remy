@@ -589,6 +589,9 @@ definitions:
               type: string
             restaurant_rank:
               type: integer
+      timestamp:
+        type: string
+        format: date-time
 
   UserAction:
     properties:
