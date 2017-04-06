@@ -10,13 +10,6 @@
     "pretty": true
   },
   "exclude": [
-    "node_modules",
     "dist"
   ]
-  // "include": [
-  //   "./api/**/*",
-  //   "./db/**/*",
-  //   "./helpers/**/*",
-  //   "./server/**/*"
-  // ]
 }
