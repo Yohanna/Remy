@@ -8,6 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "nodemon",
+      "protocol": "auto",
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": "nodemon",
       "runtimeArgs": [
@@ -26,6 +27,7 @@
     {
       "type": "node",
       "request": "launch",
+      "protocol": "auto",
       "name": "TypeScript",
       "sourceMaps": true,
       // "stopOnEntry": true,
@@ -33,6 +35,7 @@
       "cwd": "${workspaceRoot}",
       "program": "${workspaceRoot}/app.ts",
       "preLaunchTask": "build",
+      "smartStep": true,
       "outFiles": [
         "${workspaceRoot}/dist/**/*.js"
       ],
