@@ -13,10 +13,4 @@
     "node_modules",
     "dist"
   ]
-  // "include": [
-  //   "./api/**/*",
-  //   "./db/**/*",
-  //   "./helpers/**/*",
-  //   "./server/**/*"
-  // ]
 }
