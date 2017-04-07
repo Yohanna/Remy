@@ -350,6 +350,13 @@ paths:
       responses:
         "201":
           description: Success
+          schema:
+           title: searchID
+           type: object
+           description: The search ID of the newly created search
+           properties:
+            searchID:
+              type: integer
         default:
           description: Error
           schema:
@@ -579,19 +586,17 @@ definitions:
         
   RecentSearch:
     properties:
-      user_id:
-        type: integer
       restaurants:
         type: array
         items:
           properties:
-            restaurant_id:
-              type: string
+            restaurant_details:
+              properties:
+                name:
+                  type: string
             restaurant_rank:
               type: integer
-      timestamp:
-        type: string
-        format: date-time
+
 
   UserAction:
     properties:
