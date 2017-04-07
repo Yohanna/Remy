@@ -1,17 +1,30 @@
-import { Request, Response } from "express";
+import { Response } from "express";
+import { ISwaggerRequest } from "./request.swagger.d";
 import * as db from "../../db/db";
+import { RecentSearch } from "../../db/db.d";
 
 
-function getRecentSearch(req: Request, res: Response) {
-  res.sendStatus(200);
+export function getRecentSearch(req: ISwaggerRequest, res: Response) {
+  const userID: number = req.swagger.params.id.value;
+
+  db.getRecentSearch(userID)
+    .then((recentSearch) => {
+      res.json(recentSearch);
+    })
+    .catch((reason) => {
+      res.json(reason);
+    });
 }
 
+export function addRecentSearch(req: ISwaggerRequest, res: Response) {
+  let newSearch: RecentSearch = req.swagger.params.SearchResults.value;
+  newSearch.user_id = req.swagger.params.id.value;
 
-function addRecentSearch(req: Request, res: Response) {
-  res.sendStatus(200);
+  db.addRecentSearch(newSearch)
+    .then((searchID) => {
+      res.json({ searchID: searchID });
+    })
+    .catch((reason) => {
+      res.json({ message: reason });
+    });
 }
-
-module.exports = {
-  getRecentSearch,
-  addRecentSearch
-};
