@@ -1,6 +1,6 @@
 'use strict';
 
-const mysql = require('mysql');
+import * as mysql from 'mysql';
 import * as config from '../config/config';
 import * as logger from '../helpers/logger';
 import { LoginInfo, User, Metrics, RecentSearch, UserAction, UserResult } from './db.d';
@@ -204,9 +204,30 @@ export function updateUserMetrics(userID, newMetrics) {
 }
 
 export function getRecentSearch(userID: number) {
+  return new Promise((resolve, reject) => {
+    db.query('SELECT search_results, timestamp FROM recent_searches WHERE user_id=?', [userID], (err, result) => {
+      if (err) { return reject(err); }
+      // else if (result.length === 0) { reject('User does not have a recent search'); }
+      console.log('Result: \n' + result);
+    });
+  });
 }
 
-export function addRecentSearch(search: RecentSearch) {
+export function addRecentSearch(newSearch: RecentSearch) {
+  return new Promise((resolve, reject) => {
+    db.query(`INSERT INTO recent_searches(user_id, search_results)
+              VALUES(?, ?)`, [newSearch.user_id, JSON.stringify(newSearch.restaurants)], (err, result) => {
+        if (err) {
+          // Check if the user id entered is not in the users table (invalid foreign key)
+          if (err.code === 'ER_NO_REFERENCED_ROW' || err.code === 'ER_NO_REFERENCED_ROW_2') {
+            return reject('Foreign key constraint failed');
+          }
+          // otherwise return the err
+          return reject(err);
+        }
+        return resolve(result.insertId);
+      });
+  });
 }
 
 export function getUserAction(userID: number) {
