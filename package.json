@@ -5,13 +5,14 @@
   "description": "Remy Backend API Server",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon --exec ts-node app.ts",
+    "prestart": "npm run build",
+    "start": "nodemon dist/app.js",
     "debug": "export DEBUG=swagger-tools:middleware:* || set DEBUG=swagger-tools:middleware:*&& npm start",
     "build": "tsc && npm run copy-files",
-    "build:w": "tsc -w",
+    "build:w": "tsc -w && npm run copy-files",
     "copy-files": "copyfiles ./config/default.yaml ./dist/ && copyfiles ./api/swagger/* ./dist/",
     "test": "swagger project test",
-    "lint": "eslint ."
+    "lint": "eslint ./dist"
   },
   "dependencies": {
     "@google/maps": "^0.3.0",

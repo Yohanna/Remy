@@ -209,6 +209,7 @@ export function getRecentSearch(userID: number) {
       if (err) { return reject(err); }
       // else if (result.length === 0) { reject('User does not have a recent search'); }
       console.log('Result: \n' + result);
+      return resolve(result);
     });
   });
 }
