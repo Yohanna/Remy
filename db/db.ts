@@ -205,10 +205,9 @@ export function updateUserMetrics(userID, newMetrics) {
 
 export function getRecentSearch(userID: number) {
   return new Promise((resolve, reject) => {
-    db.query('SELECT search_results, timestamp FROM recent_searches WHERE user_id=?', [userID], (err, result) => {
+    db.query('SELECT search_results, timestamp FROM recent_searches WHERE user_id=?', [userID], (err, result: Array<any>) => {
       if (err) { return reject(err); }
-      // else if (result.length === 0) { reject('User does not have a recent search'); }
-      console.log('Result: \n' + result);
+      else if (result.length === 0) { return reject('User does not have a recent search'); }
       return resolve(result);
     });
   });

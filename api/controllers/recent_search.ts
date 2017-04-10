@@ -12,7 +12,7 @@ export function getRecentSearch(req: ISwaggerRequest, res: Response) {
       res.json(recentSearch);
     })
     .catch((reason) => {
-      res.json(reason);
+      res.json({ message: reason });
     });
 }
 

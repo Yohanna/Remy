@@ -6,7 +6,7 @@
   "main": "app.js",
   "scripts": {
     "prestart": "npm run build",
-    "start": "nodemon dist/app.js",
+    "start": "nodemon --exec ts-node app.ts",
     "debug": "export DEBUG=swagger-tools:middleware:* || set DEBUG=swagger-tools:middleware:*&& npm start",
     "build": "tsc && npm run copy-files",
     "build:w": "tsc -w && npm run copy-files",
