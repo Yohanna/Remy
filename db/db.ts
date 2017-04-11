@@ -232,7 +232,7 @@ export function addRecentSearch(newSearch: RecentSearch) {
 
 export function getUserAction(userID: number) {
   return new Promise((resolve, reject) => {
-    db.query(`SELECT restaurant_id, timestamp, timestamp FROM user_actions WHERE user_id=? `, [userID], (err, result: Array<any>) => {
+    db.query(`SELECT restaurant_id, timestamp, action FROM user_actions WHERE user_id=? `, [userID], (err, result: Array<any>) => {
       if (err) { return reject(err); }
       else if (result.length === 0) { return reject('User does not have any actions'); }
       return resolve(result);
