@@ -17,7 +17,7 @@ export function getUserAction(req: ISwaggerRequest, res: Response) {
 
 export function addUserAction(req: ISwaggerRequest, res: Response) {
 
-  let newAction: UserAction; //= req.swagger. // TODO
+  let newAction: UserAction = req.swagger.params.UserAction.value;
   newAction.user_id = req.swagger.params.id.value;
 
   db.addUserAction(newAction)

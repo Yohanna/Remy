@@ -253,7 +253,7 @@ export function getRestaurantsAction(restaurantID: number) {
 export function addUserAction(action: UserAction) {
   return new Promise((resolve, reject) => {
     db.query(`INSERT INTO user_actions(user_id, restaurant_id, action)
-              VALUES(?, ?)`, [action.user_id, action.restaurant_id], (err, result) => {
+              VALUES(?, ?, ?)`, [action.user_id, action.restaurant_id, action.action], (err, result) => {
         // Check if the user id entered is not in the users table (invalid foreign key)
         if (err && (err.code === 'ER_NO_REFERENCED_ROW' || err.code === 'ER_NO_REFERENCED_ROW_2')) {
           return reject('Foreign key constraint failed. Make sure the user id is already in the Users table');
