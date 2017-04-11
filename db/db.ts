@@ -231,7 +231,38 @@ export function addRecentSearch(newSearch: RecentSearch) {
 }
 
 export function getUserAction(userID: number) {
+  return new Promise((resolve, reject) => {
+    db.query(`SELECT restaurant_id, timestamp, timestamp FROM user_actions WHERE user_id=? `, [userID], (err, result: Array<any>) => {
+      if (err) { return reject(err); }
+      else if (result.length === 0) { return reject('User does not have any actions'); }
+      return resolve(result);
+    });
+  });
 }
 
-export function addUserAction(search: UserAction) {
+export function getRestaurantsAction(restaurantID: number) {
+  return new Promise((resolve, reject) => {
+    db.query(`SELECT user_id, timestamp, action FROM user_actions WHERE restaurant_id=? `, [restaurantID], (err, result: Array<any>) => {
+      if (err) { return reject(err); }
+      else if (result.length === 0) { return reject('User does not have any actions'); }
+      return resolve(result);
+    });
+  });
+}
+
+export function addUserAction(action: UserAction) {
+  return new Promise((resolve, reject) => {
+    db.query(`INSERT INTO user_actions(user_id, restaurant_id, action)
+              VALUES(?, ?)`, [action.user_id, action.restaurant_id], (err, result) => {
+        // Check if the user id entered is not in the users table (invalid foreign key)
+        if (err && (err.code === 'ER_NO_REFERENCED_ROW' || err.code === 'ER_NO_REFERENCED_ROW_2')) {
+          return reject('Foreign key constraint failed. Make sure the user id is already in the Users table');
+        }
+        else if (err) {
+          // otherwise just return the err
+          return reject(err);
+        }
+        resolve();
+      });
+  });
 }

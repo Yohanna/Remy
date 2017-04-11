@@ -27,7 +27,7 @@ export interface RecentSearch {
 
 export interface UserAction {
   user_id: number,
-  restaurant_id: number,
+  restaurant_id: string,
   action: "click" | "directions" | "more_info",
   timestamp: Date
 }
