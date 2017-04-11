@@ -46,7 +46,7 @@ SwaggerExpress.create(swaggerConfig, function (err, swaggerExpress) {
   const port = process.env.PORT || 10010;
   app.listen(port);
 
-  console.log(`Swagger docs are avialable at: http://127.0.0.1:${port}/docs`);
+  console.log(`Swagger docs are avialable at: ${swaggerExpress.runner.swagger.host}/docs`);
 
   if (swaggerExpress.runner.swagger.paths['/hello']) {
     console.log(`try this:\ncurl http://127.0.0.1:${port}/hello?name=Scott`);
