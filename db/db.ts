@@ -210,6 +210,7 @@ export function getRecentSearch(userID: number) {
       else if (result.length === 0) { return reject('User does not have a recent search'); }
 
       for (let search of result) {
+        // search_results are 'stringified' when added to the DB, we need to convert it back to a JSON
         search.search_results = JSON.parse((search.search_results as any));
 
         // for (let result of search.search_results) {
@@ -239,6 +240,11 @@ export function addRecentSearch(newSearch: RecentSearch) {
   });
 }
 
+/**
+ * Get all the users with the associated actions they performed on restaurants
+ * 
+ * @param userID User id to search for
+ */
 export function getUserAction(userID: number) {
   return new Promise((resolve, reject) => {
     db.query(`SELECT restaurant_id, timestamp, action FROM user_actions WHERE user_id=? `, [userID], (err, result: Array<any>) => {
@@ -249,6 +255,11 @@ export function getUserAction(userID: number) {
   });
 }
 
+/**
+ * Find all the restaurants that have 'actions' performed on them
+ * 
+ * @param restaurantID The place_id to query the DB for
+ */
 export function getRestaurantsAction(restaurantID: number) {
   return new Promise((resolve, reject) => {
     db.query(`SELECT user_id, timestamp, action FROM user_actions WHERE restaurant_id=? `, [restaurantID], (err, result: Array<any>) => {
