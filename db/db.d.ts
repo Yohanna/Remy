@@ -21,7 +21,7 @@ export interface Metrics {
 
 export interface RecentSearch {
   user_id: number,
-  search_results: { [index: number]: { restaurant_details: Object, restaurant_rank: number } },
+  search_results: { restaurant_details: Object, restaurant_rank: number }[],
   timestamp: Date
 }
 
