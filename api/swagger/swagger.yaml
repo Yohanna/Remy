@@ -381,7 +381,9 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/UserAction'
+            type: array
+            items:
+              $ref: '#/definitions/UserAction'
 
         "404":
           description: User does not have a recent search
