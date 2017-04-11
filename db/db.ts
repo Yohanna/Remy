@@ -216,7 +216,7 @@ export function getRecentSearch(userID: number) {
 export function addRecentSearch(newSearch: RecentSearch) {
   return new Promise((resolve, reject) => {
     db.query(`INSERT INTO recent_searches(user_id, search_results)
-              VALUES(?, ?)`, [newSearch.user_id, JSON.stringify(newSearch.restaurants)], (err, result) => {
+              VALUES(?, ?)`, [newSearch.user_id, JSON.stringify(newSearch.search_results)], (err, result) => {
         // Check if the user id entered is not in the users table (invalid foreign key)
         if (err && (err.code === 'ER_NO_REFERENCED_ROW' || err.code === 'ER_NO_REFERENCED_ROW_2')) {
           return reject('Foreign key constraint failed. Make sure the user id is already in the Users table');
