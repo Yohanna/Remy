@@ -39,6 +39,7 @@ paths:
           required: true
           type: number
           format: double
+          default: 44.227917
        
         - name: location_long
           in: query
@@ -46,6 +47,7 @@ paths:
           required: true
           type: number
           format: double
+          default: -76.495611
        
         - name: distance
           in: query
