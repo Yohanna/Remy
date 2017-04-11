@@ -591,15 +591,15 @@ definitions:
   RecentSearch:
     properties:
       restaurants:
+        description: Array of restaurants object (use same data returned by GET /restaurant_list)
         type: array
         items:
           properties:
             restaurant_details:
-              properties:
-                name:
-                  type: string
+              description: A single restaurant details as returned by GET /restaurant_list
             restaurant_rank:
               type: integer
+              description: Restaurant position in the list
 
 
   UserAction:
