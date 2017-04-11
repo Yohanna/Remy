@@ -602,16 +602,11 @@ definitions:
 
   UserAction:
     properties:
-      user_id:
-        type: integer
       restaurant_id:
-        type: integer
+        type: string
       action:
         type: string
         enum:
           - click
           - directions
           - more_info
-      timestamp:
-        type: string
-        format: date-time
