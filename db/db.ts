@@ -205,9 +205,18 @@ export function updateUserMetrics(userID, newMetrics) {
 
 export function getRecentSearch(userID: number) {
   return new Promise((resolve, reject) => {
-    db.query('SELECT search_results, timestamp FROM recent_searches WHERE user_id=?', [userID], (err, result: Array<any>) => {
+    db.query('SELECT search_results, timestamp FROM recent_searches WHERE user_id=?', [userID], (err, result: Array<RecentSearch>) => {
       if (err) { return reject(err); }
       else if (result.length === 0) { return reject('User does not have a recent search'); }
+
+      for (let search of result) {
+        search.search_results = JSON.parse((search.search_results as any));
+
+        // for (let result of search.search_results) {
+        //   logger.info(`${JSON.stringify(result.restaurant_details)}`);
+        // }
+      }
+
       return resolve(result);
     });
   });
