@@ -2,7 +2,7 @@
 
 ## Development Environment
 
-The backend of Remy is written in `Node.js`
+The backend of Remy is written in `Node.js` (TypeScript & JavaScript) and `MySQL`.
 
 Tools to install
 * Node.js
@@ -13,12 +13,25 @@ Tools to install
 * Once you get your Key, add it to the `API_KEY` variable in `./config/confi.js`. DO NOT commit that key with any code changes!
 
 ### Running the server
+
+#### Set environment configuration
+* Create a new file named `.env` and add the following values in it:
+
+```
+GOOGLE_MAPS_API_KEY='YOUR_API_KEY'
+DB_USER='DB_USERNAME'
+DB_PW='DB_PASS'
+DB_HOST='DB_HOST' # localhost if running a local MySQL server
+DB_PORT='3306' # default port number
+```
+
 * cd to the directory of the repo and run the following from a terminal:
 1. `npm install` To install all the dependencies from `package.json`.
-2. `npm start` to run the server.
+2. In a terminal, run `npm build:w` to run the TypeScript compiler in watch mode. This will transpiler all the files and put them in `dist` directory every time you save a file.
+3. In another terminal, run `npm start` to run the server.
 
 #### To edit the API specs in Swagger Editor TODO, doesn't work
-* `swagger project edit` to open Swagger Editor in the browser. Make sure the server is running as well in a separate terminal window.
+* Run `swagger project edit` to open Swagger Editor in the browser. Make sure the server is running as well in a separate terminal window.
 
 #### To print extra debuging info
 * Run `npm run debug`
@@ -37,5 +50,3 @@ and [Swagger Tools](https://github.com/apigee-127/swagger-tools) are used to val
 ### Implementation Guide
 
 * Implement the server logic such as Google Maps API calss in the `server` directory.
-
-* Any configuration options like API keys, environment variables...etc., should be added in `config/config.js`
