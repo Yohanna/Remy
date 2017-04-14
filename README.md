@@ -10,7 +10,7 @@ Tools to install
 
 ### Get a Google Places Web Services API key
 * Get an API Key by following the instructions [here](https://developers.google.com/places/web-service/get-api-key).
-* Once you get your Key, add it to the `API_KEY` variable in `./config/confi.js`. DO NOT commit that key with any code changes!
+* Once you get your Key, add it to the `GOOGLE_MAPS_API_KEY` variable in `.env`. DO NOT commit that key with any code changes!
 
 ### Running the server
 
