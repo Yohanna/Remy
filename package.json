@@ -37,7 +37,7 @@
     "@types/supertest": "^2.0.0",
     "chai": "^3.5.0",
     "copyfiles": "^1.2.0",
-    "eslint": "^3.19.2",
+    "eslint": "^3.19.0",
     "mocha": "^2.2.5",
     "nodemon": "1.11.0",
     "request": "^2.58.0",
