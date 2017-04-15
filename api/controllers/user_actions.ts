@@ -28,3 +28,18 @@ export function addUserAction(req: ISwaggerRequest, res: Response) {
       res.json({ message: reason });
     });
 }
+
+export function deleteUserAction(req: ISwaggerRequest, res: Response) {
+  const userID: number = req.swagger.params.id.value;
+  const restaurantID: string = req.swagger.params.restaurant_id.value;
+  const timestamp: string = req.swagger.params.timestamp.value;
+
+  db.deleteUserAction(userID, restaurantID, timestamp)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((reason) => {
+      res.json({ message: reason });
+    });
+
+}

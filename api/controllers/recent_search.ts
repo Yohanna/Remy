@@ -28,3 +28,17 @@ export function addRecentSearch(req: ISwaggerRequest, res: Response) {
       res.json({ message: reason });
     });
 }
+
+export function deleteRecentSearch(req: ISwaggerRequest, res: Response) {
+  const userID: number = req.swagger.params.id.value;
+  const searchID: number = req.swagger.params.search_id ? req.swagger.params.search_id.value : null;
+
+  db.deleteRecentSearch(userID, searchID)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((reason) => {
+      res.json({ message: reason });
+    });
+
+}
