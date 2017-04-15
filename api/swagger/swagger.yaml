@@ -375,15 +375,11 @@ paths:
           description: The ID of the User to delete their search
           required: true
           type: integer
-          
         - name: search_id
-          in: body
+          in: query
           required: false
           description: A search ID to delete specfic search instead of all searches by the user
-          schema:
-            properties:
-              search_id:
-                type: integer
+          type: integer          
       responses:
         "200":
           description: Success
@@ -465,16 +461,17 @@ paths:
           required: true
           type: integer
           
-        - name: Restaurant ID & Timestamp
-          in: body
+        - name: restaurant_id
+          in: query
+          type: string
           required: true
-          schema:
-            properties:
-              restaurant_id:
-                type: string
-              timestamp:
-                type: string
-                format: date-time
+          
+        - name: timestamp
+          in: query
+          type: string
+          format: date-time
+          required: true
+
       responses:
         "200":
           description: Success
