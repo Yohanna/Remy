@@ -286,3 +286,25 @@ export function addUserAction(action: UserAction) {
       });
   });
 }
+
+export function deleteUserAction(userID: number, restaurantID: string, timestamp: string) {
+  return new Promise((resolve, reject) => {
+    db.query('DELETE FROM user_actions WHERE user_id=? AND restaurant_id=? AND timestamp=?', [userID, restaurantID, timestamp], (err) => {
+      err ? reject(err) : resolve();
+    });
+  });
+}
+
+export function deleteRecentSearch(userID: number, searchID?: number) {
+  return new Promise((resolve, reject) => {
+    if (searchID) {
+      db.query('DELETE FROM recent_searches WHERE user_id=? AND search_id=?', [userID, searchID], (err) => {
+        err ? reject(err) : resolve();
+      });
+    } else {
+      db.query('DELETE FROM recent_searches WHERE user_id=?', [userID], (err) => {
+        err ? reject(err) : resolve();
+      });
+    }
+  });
+}
