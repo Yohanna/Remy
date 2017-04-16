@@ -2,7 +2,7 @@
 import * as db from '../../db/db';
 
 
-function getUserMetrics(req, res) {
+export function getUserMetrics(req, res) {
   const userID = req.swagger.params.id.value;
 
   db.getUserMetrics(userID)
@@ -14,7 +14,7 @@ function getUserMetrics(req, res) {
     });
 }
 
-function addUserMetrics(req, res) {
+export function addUserMetrics(req, res) {
   const newUserMetrics = req.swagger.params.metrics.value;
   const userID = req.swagger.params.id.value;
 
@@ -27,7 +27,7 @@ function addUserMetrics(req, res) {
     });
 }
 
-function updateUserMetrics(req, res) {
+export function updateUserMetrics(req, res) {
   const newMetrics = req.swagger.params.metrics.value;
   const userID = req.swagger.params.id.value;
 
@@ -39,10 +39,3 @@ function updateUserMetrics(req, res) {
       res.json({ message: reason });
     })
 }
-
-
-module.exports = {
-  getUserMetrics: getUserMetrics,
-  addUserMetrics: addUserMetrics,
-  updateUserMetrics: updateUserMetrics
-};
