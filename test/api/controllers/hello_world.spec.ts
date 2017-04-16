@@ -1,6 +1,4 @@
-import { Response } from "express";
 import * as chai from 'chai';
-import * as mocha from 'mocha';
 import * as supertest from 'supertest';
 
 const api = supertest('http://localhost:10010');
