@@ -34,8 +34,8 @@ export function deleteRecentSearch(req: ISwaggerRequest, res: Response) {
   const searchID: number = req.swagger.params.search_id ? req.swagger.params.search_id.value : null;
 
   db.deleteRecentSearch(userID, searchID)
-    .then(() => {
-      res.sendStatus(200);
+    .then((message) => {
+      res.status(200).json(message);
     })
     .catch((reason) => {
       res.json({ message: reason });

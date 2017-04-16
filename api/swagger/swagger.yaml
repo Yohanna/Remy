@@ -378,11 +378,16 @@ paths:
         - name: search_id
           in: query
           required: false
-          description: A search ID to delete specfic search instead of all searches by the user
+          description: A search ID to delete a specfic search instead of all searches by the user. Do not supply any value for this parameter if you need to delete all recent searches for a specific user.
           type: integer          
       responses:
         "200":
           description: Success
+          schema:
+            properties:
+              affected_rows:
+                type: integer
+                description: Number of affected rows by this operation
         default:
           description: Error
           schema:
@@ -475,6 +480,12 @@ paths:
       responses:
         "200":
           description: Success
+          schema:
+            properties:
+              affected_rows:
+                type: integer
+                description: Number of affected rows by this operation
+            
         default:
           description: Error
           schema:

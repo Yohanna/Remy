@@ -35,8 +35,8 @@ export function deleteUserAction(req: ISwaggerRequest, res: Response) {
   const timestamp: string = req.swagger.params.timestamp.value;
 
   db.deleteUserAction(userID, restaurantID, timestamp)
-    .then(() => {
-      res.sendStatus(200);
+    .then((message) => {
+      res.status(200).json(message);
     })
     .catch((reason) => {
       res.json({ message: reason });
