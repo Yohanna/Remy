@@ -494,7 +494,7 @@ paths:
   /account/login:
     x-swagger-router-controller: account
     post:
-      description: Returns 'Hello' to the caller
+      description: Log In to the app
       operationId: login
       tags:
         - Account

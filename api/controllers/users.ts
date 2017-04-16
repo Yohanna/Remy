@@ -1,8 +1,8 @@
-'use strict';
-// const db = require('../../db/db');
-const db = require('../../db/db');
+import { Response } from "express";
+import { ISwaggerRequest } from "./request.swagger.d";
+import * as db from "../../db/db";
 
-function getUser(req, res) {
+export function getUser(req, res) {
   const userID = req.swagger.params.id.value;
 
   db.getUser(userID)
@@ -14,7 +14,7 @@ function getUser(req, res) {
     });
 }
 
-function getAllUsers(req, res) {
+export function getAllUsers(req, res) {
   db.getAllUsers()
     .then(function (result) {
       res.send(result);
@@ -24,7 +24,7 @@ function getAllUsers(req, res) {
     });
 }
 
-function addUser(req, res) {
+export function addUser(req, res) {
   const newUser = req.swagger.params.user.value;
 
   db.addUser(newUser)
@@ -36,7 +36,7 @@ function addUser(req, res) {
     });
 }
 
-function updateUser(req, res) {
+export function updateUser(req, res) {
   const userID = req.swagger.params.id.value;
   const newUser = req.swagger.params.user.value;
 
@@ -49,7 +49,7 @@ function updateUser(req, res) {
     });
 }
 
-function deleteUser(req, res) {
+export function deleteUser(req, res) {
   const userID = req.swagger.params.id.value;
 
   db.deleteUser(userID)
@@ -60,11 +60,3 @@ function deleteUser(req, res) {
       res.send(reason);
     });
 }
-
-module.exports = {
-  getUser: getUser,
-  getAllUsers: getAllUsers,
-  addUser: addUser,
-  updateUser: updateUser,
-  deleteUser: deleteUser
-};

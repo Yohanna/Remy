@@ -1,9 +1,11 @@
-'use strict';
-const db = require('../../db/db');
+import { Response } from "express";
+import { ISwaggerRequest } from "./request.swagger.d";
+import * as db from "../../db/db";
+import { LoginInfo } from '../../db/db.d';
 
-function login(req, res) {
+export function login(req: ISwaggerRequest, res: Response) {
 
-  const userInfo = req.swagger.params.LoginInfo.value;
+  const userInfo: LoginInfo = req.swagger.params.LoginInfo.value;
 
   db.login(userInfo)
     .then((userID) => {
@@ -17,8 +19,3 @@ function login(req, res) {
       }
     });
 }
-
-
-module.exports = {
-  login: login
-};
