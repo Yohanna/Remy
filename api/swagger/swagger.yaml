@@ -686,7 +686,9 @@ definitions:
       action:
         type: string
         enum:
-          - click
-          - directions
+          - click_from_map
+          - click_from_list
+          - directions_from_map
+          - directions_from_list
           - more_info
 
