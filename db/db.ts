@@ -169,12 +169,7 @@ export function addUserMetrics(userID, userMetrics: Metrics) {
         JSON.stringify(userMetrics.history),
         JSON.stringify(userMetrics.favorite_restaurants),
         JSON.stringify(userMetrics.favorite_food)], (err) => {
-          if (err) {
-            reject(err);
-          }
-          else {
-            resolve();
-          }
+          err ? reject(err) : resolve({ status: 'OK' })
         });
   });
 }
@@ -282,7 +277,7 @@ export function addUserAction(action: UserAction) {
           // otherwise just return the err
           return reject(err);
         }
-        resolve();
+        resolve({ status: 'OK' });
       });
   });
 }

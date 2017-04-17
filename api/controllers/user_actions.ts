@@ -21,8 +21,8 @@ export function addUserAction(req: ISwaggerRequest, res: Response) {
   newAction.user_id = req.swagger.params.id.value;
 
   db.addUserAction(newAction)
-    .then(() => {
-      res.sendStatus(200);
+    .then((status) => {
+      res.status(201).json(status);
     })
     .catch((reason) => {
       res.json({ message: reason });

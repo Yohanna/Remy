@@ -1,4 +1,4 @@
-'use strict';
+import { Response } from "express";
 import * as db from '../../db/db';
 
 
@@ -14,13 +14,13 @@ export function getUserMetrics(req, res) {
     });
 }
 
-export function addUserMetrics(req, res) {
+export function addUserMetrics(req, res: Response) {
   const newUserMetrics = req.swagger.params.metrics.value;
   const userID = req.swagger.params.id.value;
 
   db.addUserMetrics(userID, newUserMetrics)
-    .then(() => {
-      res.sendStatus(201);
+    .then((status) => {
+      res.status(201).json(status);
     })
     .catch((reason) => {
       res.json({ message: reason });

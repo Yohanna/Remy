@@ -262,6 +262,11 @@ paths:
       responses:
         "201":
           description: Success
+          schema:
+            properties:
+              status:
+                type: string
+                default: OK
         default:
           description: Error
           schema:
@@ -449,6 +454,11 @@ paths:
       responses:
         "201":
           description: Success
+          schema:
+            properties:
+              status:
+                type: string
+                default: OK
         default:
           description: Error
           schema:
@@ -679,3 +689,4 @@ definitions:
           - click
           - directions
           - more_info
+
