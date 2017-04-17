@@ -11,7 +11,7 @@
     "build": "tsc && npm run copy-files",
     "build:w": "tsc -w && npm run copy-files",
     "copy-files": "copyfiles ./config/default.yaml ./dist/ && copyfiles ./api/swagger/* ./dist/",
-    "test": "swagger project test",
+    "test:file": "mocha -r ts-node/register",
     "lint": "eslint ./dist"
   },
   "dependencies": {
