@@ -1,5 +1,3 @@
-'use strict';
-
 import * as mysql from 'mysql';
 import * as config from '../config/config';
 import * as logger from '../helpers/logger';
