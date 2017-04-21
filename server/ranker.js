@@ -111,7 +111,7 @@ function getCustomList(user_id, query, user_loc) {
         db.getUserMetrics(user_id)
             .then((userMetrics) => {
                 let preferenceList = [];
-                let userPreferences = userMetrics[0].favorite_food;
+                let userPreferences = [];//= userMetrics[0].favorite_food;
                 let iterations = 0;
 
                 for (let i = 0; i < userPreferences.length; i++) {
