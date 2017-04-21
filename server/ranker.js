@@ -190,7 +190,7 @@ function getWeight(rating, rank, listSize, personal, preference, distance, radiu
 
     weight = multiplier * (rating + normalRank);
 
-    return weight;
+    return 100 - rank;
 }
 
 function sort_by_weight(list, radius) {
