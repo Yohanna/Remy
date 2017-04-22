@@ -1,6 +1,6 @@
-'use strict';
-const config = require('../config/config');
-const logger = require('../helpers/logger');
+import * as config from '../config/config';
+import * as logger from '../helpers/logger';
+
 const geolib = require('geolib');
 const GoogleLocations = require('google-locations');
 const db = require('../db/db');
@@ -13,13 +13,13 @@ const googleMapClient = require('@google/maps').createClient({
     key: config.API_KEY
 });
 
-function rank(params) {
+export function rank(params) {
     return new Promise(function (resolve, reject) {
         let apiList = [];
 
         // location: { lat: 44.227917, lng: -76.495611 },
         const user_location = { lat: params.location_lat.value, lng: params.location_long.value };
-        const user_id = params.user_id.value;
+        const user_id: number = params.user_id.value;
 
         let query = {};
 
@@ -106,7 +106,7 @@ function rank(params) {
     });
 }
 
-function getCustomList(user_id, query, user_loc) {
+function getCustomList(user_id: number, query, user_loc) {
     return new Promise((resolve, reject) => {
         db.getUserMetrics(user_id)
             .then((userMetrics) => {
@@ -226,5 +226,3 @@ function getDetails(list) {
         }
     });
 }
-
-module.exports.rank = rank;
