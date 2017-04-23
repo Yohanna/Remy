@@ -1,5 +1,10 @@
 # Remy
 
+Remy is a service that provide restaurant recommendations to users based on their eating preferences.
+It learns about its users by using some basic information like their prefered food, price range, and their transportation method, and also by studying their actions on the client side on how they interact with each search result to try and improve future results.
+
+This repo contain the backend server of the service. Any client can talk to the server through the API implemented.
+
 ## Development Environment
 
 The backend of Remy is written in `Node.js` (TypeScript & JavaScript) and `MySQL`.
